@@ -8,7 +8,7 @@ function App() {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const response = await fetch('http://localhost:8000/actors', {
+    const response = await fetch('http://ec2-34-239-128-56.compute-1.amazonaws.com:8000/actors', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
