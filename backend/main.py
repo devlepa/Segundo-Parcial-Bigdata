@@ -2,8 +2,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
-from . import models, schemas, crud
-from . import database
+import models, schemas, crud, database
 
 SessionLocal = database.SessionLocal 
 engine = database.engine 
@@ -40,6 +39,9 @@ def read_actors(db: Session = Depends(get_db)):
 @app.post("/actors", response_model=schemas.ActorOut)
 def create_actor(actor: schemas.ActorCreate, db: Session = Depends(get_db)):
     return crud.create_actor(db, actor)
+
+
+
 
 
 # static/index.html
