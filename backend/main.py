@@ -36,7 +36,6 @@ def get_db():
 def root():
     return {"message": "Welcome to the Actors API. Use /actors to interact with the actors data."}
 
-
 @app.get("/actors", response_model=list[schemas.ActorOut])
 def read_actors(db: Session = Depends(get_db)):
     return crud.get_actors(db)
