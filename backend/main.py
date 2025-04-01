@@ -14,7 +14,8 @@ app = FastAPI()
 
 origins = [
     "http://localhost:5173",
-    "http://ec2-34-239-128-56.compute-1.amazonaws.com:5173",
+    "ec2-13-218-151-147.compute-1.amazonaws.com:5173",
+    "ec2-13-218-151-147.compute-1.amazonaws.com"
 ]
 
 app.add_middleware(
@@ -44,8 +45,3 @@ def read_actors(db: Session = Depends(get_db)):
 def create_actor(actor: schemas.ActorCreate, db: Session = Depends(get_db)):
     return crud.create_actor(db, actor)
 
-
-
-
-
-# static/index.html

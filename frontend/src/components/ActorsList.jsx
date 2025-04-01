@@ -1,48 +1,47 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from 'react';
 
-interface Actor {
-  actor_id: number;
-  first_name: string;
-  last_name: string;
-  last_update: string;
-}
+const ActorsList = () => {
+    const [actors, setActors] = useState([]);
 
-const ActorsList: React.FC = () => {
-  const [actors, setActors] = useState<Actor[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+    const fetchActors = async () => {
+        try {
+            const response = await fetch('http://ec2-13-218-151-147.compute-1.amazonaws.com:8000/actors');
+            const data = await response.json();
+            setActors(data);
+        } catch (error) {
+            console.error('Error fetching actors:', error);
+        }
+    };
 
-  const fetchActors = async () => {
-    try {
-      const response = await axios.get("http://YOUR-EC2-IP:8000/actors");
-      setActors(response.data);
-      setLoading(false);
-    } catch (error) {
-      setError("Error al cargar los actores");
-      setLoading(false);
-    }
-  };
+    useEffect(() => {
+        fetchActors();
+    }, []);
 
-  useEffect(() => {
-    fetchActors();
-  }, []);
-
-  if (loading) return <p>Cargando...</p>;
-  if (error) return <p>{error}</p>;
-
-  return (
-    <div>
-      <h2 className="text-2xl font-bold mb-3">Actores Registrados</h2>
-      <ul>
-        {actors.map((actor) => (
-          <li key={actor.actor_id} className="mb-2">
-            {actor.first_name} {actor.last_name}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
+    return (
+        <div>
+            <h2>Actors List</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Last Update</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {actors.map(actor => (
+                        <tr key={actor.actor_id}>
+                            <td>{actor.actor_id}</td>
+                            <td>{actor.first_name}</td>
+                            <td>{actor.last_name}</td>
+                            <td>{actor.last_update}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
 };
 
 export default ActorsList;
