@@ -16,7 +16,7 @@ const AddRentalForm = () => {
         };
 
         try {
-            const response = await fetch('/api/rentals', {
+            const response = await fetch('http://ec2-3-91-179-100.compute-1.amazonaws.com:8000/api/rentals', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
