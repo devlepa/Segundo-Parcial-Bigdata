@@ -12,9 +12,10 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["*, http://ec2-3-91-179-100.compute-1.amazonaws.com:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
