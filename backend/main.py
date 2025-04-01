@@ -13,8 +13,8 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 origins = [
-    "http://localhost",
-    "http://localhost:3000",
+    "http://localhost:5173",
+    "http://ec2-34-239-128-56.compute-1.amazonaws.com:5173",
 ]
 
 app.add_middleware(
@@ -31,6 +31,11 @@ def get_db():
         yield db
     finally:
         db.close()
+
+@app.get("/")
+def root():
+    return {"message": "Welcome to the Actors API. Use /actors to interact with the actors data."}
+
 
 @app.get("/actors", response_model=list[schemas.ActorOut])
 def read_actors(db: Session = Depends(get_db)):

@@ -1,55 +1,74 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import './styles.css';
 
-function App() {
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [message, setMessage] = useState('');
+const App = () => {
+  const [actors, setActors] = useState([]);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  
+  // Ruta de tu backend FastAPI en la instancia EC2
+  const BACKEND_URL = "http://<TU_IP_PUBLICA_EC2>:8000/actors"; 
 
-  const handleSubmit = async (event: React.FormEvent) => {
-    event.preventDefault();
-
-    const response = await fetch('http://ec2-34-239-128-56.compute-1.amazonaws.com:8000/actors', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ first_name: firstName, last_name: lastName }),
-    });
-
-    if (response.ok) {
-      setMessage('Actor guardado exitosamente!');
-    } else {
-      setMessage('Hubo un problema al guardar el actor.');
+  // Obtener la lista de actores (GET)
+  const fetchActors = async () => {
+    try {
+      const response = await axios.get(BACKEND_URL);
+      setActors(response.data);
+    } catch (error) {
+      console.error("Error al obtener actores:", error);
     }
   };
 
+  // Crear un nuevo actor (POST)
+  const createActor = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post(BACKEND_URL, {
+        first_name: firstName,
+        last_name: lastName,
+      });
+      setActors([...actors, response.data]);
+      setFirstName("");
+      setLastName("");
+    } catch (error) {
+      console.error("Error al crear actor:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchActors();
+  }, []);
+
   return (
     <div className="container">
-      <h1>Registrar Actor</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>First Name:</label>
-          <input 
-            type="text" 
-            value={firstName} 
-            onChange={(e) => setFirstName(e.target.value)} 
-            required 
-          />
-        </div>
-        <div>
-          <label>Last Name:</label>
-          <input 
-            type="text" 
-            value={lastName} 
-            onChange={(e) => setLastName(e.target.value)} 
-            required 
-          />
-        </div>
-        <button type="submit">Guardar</button>
+      <h1>🎬 Actores 🎬</h1>
+
+      <form onSubmit={createActor}>
+        <input
+          type="text"
+          value={firstName}
+          placeholder="Nombre"
+          onChange={(e) => setFirstName(e.target.value)}
+        />
+        <input
+          type="text"
+          value={lastName}
+          placeholder="Apellido"
+          onChange={(e) => setLastName(e.target.value)}
+        />
+        <button type="submit">Crear Actor</button>
       </form>
-      {message && <p>{message}</p>}
+
+      <ul>
+        {actors.map((actor: any) => (
+          <li key={actor.actor_id}>
+            {actor.first_name} {actor.last_name}
+          </li>
+        ))}
+      </ul>
     </div>
   );
-}
+};
 
 export default App;
