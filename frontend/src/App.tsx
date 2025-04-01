@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import ActorsList from './components/ActorsList';
 import AddActorForm from './components/AddActorForm';
-import RentalList from './components/RentalList'
+import AddRentalForm from './components/AddRentalForm'
 import Home from './components/Home';
 import './styles.css';
 
@@ -23,7 +23,7 @@ const App = () => {
                     <Route path="/" element={<Home />} />
                     <Route path="/actors" element={<ActorsList />} />
                     <Route path="/add-actor" element={<AddActorForm />} />
-                    <Route path="/rental" element={<RentalList />} />
+                    <Route path="/rental" element={<AddRentalForm />} />
                 </Routes>
             </div>
         </Router>
