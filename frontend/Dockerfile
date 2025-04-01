@@ -1,5 +1,5 @@
 # Dockerfile
-FROM node:18-alpine
+FROM node:18-alpin
 
 WORKDIR /app
 
@@ -8,8 +8,6 @@ COPY package*.json ./
 COPY . .
 
 RUN npm install
-
-RUN npm run dev
 
 EXPOSE 5173
 

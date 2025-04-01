@@ -5,7 +5,7 @@ const ActorsList = ({ onRefresh }) => {
 
     const fetchActors = async () => {
         try {
-            const response = await fetch("http://ec2-13-218-151-147.compute-1.amazonaws.com:8000/actors");
+            const response = await fetch("http://ec2-3-91-179-100.compute-1.amazonaws.com:8000/actors");
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }

@@ -6,9 +6,6 @@ WORKDIR /app
 
 COPY . /app
 
-# Instalamos las dependencias necesarias para que cryptography se compile correctamente
-RUN apt-get update && apt-get install -y gcc libssl-dev build-essential
-
 # Instalamos los paquetes Python desde requirements.txt
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
