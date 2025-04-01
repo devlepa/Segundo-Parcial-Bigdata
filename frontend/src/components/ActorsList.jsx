@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const ActorsList = () => {
+const ActorsList = ({ onRefresh }) => {
     const [actors, setActors] = useState([]);
 
     const fetchActors = async () => {
@@ -18,11 +18,11 @@ const ActorsList = () => {
 
     useEffect(() => {
         fetchActors();
-    }, []);
+    }, [onRefresh]);
 
     return (
         <div>
-            <h2>Actors List</h2>
+            <button onClick={fetchActors} className="refresh-btn">Refresh</button>
             <table>
                 <thead>
                     <tr>
