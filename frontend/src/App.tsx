@@ -13,7 +13,7 @@ const App = () => {
     return (
         <div className="container">
             <h1>Actors Management</h1>
-            <AddActorForm onRefresh={handleRefresh} />  {/* Cambiado aquí */}
+            <AddActorForm onRefresh={handleRefresh} />
             <ActorsList onRefresh={refresh} />
         </div>
     );
