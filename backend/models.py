@@ -1,7 +1,8 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, TIMESTAMP, SmallInteger, Text, DECIMAL, Enum, SET
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, TIMESTAMP, SmallInteger, Text, DECIMAL, Enum
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
+
 
 class Actor(Base):
     __tablename__ = "actor"
@@ -11,7 +12,6 @@ class Actor(Base):
     last_name = Column(String(45), nullable=False)
     last_update = Column(TIMESTAMP, nullable=False)
 
-##
 
 class Film(Base):
     __tablename__ = 'film'
@@ -19,18 +19,20 @@ class Film(Base):
     film_id = Column(SmallInteger, primary_key=True, autoincrement=True)
     title = Column(String(255), nullable=False, index=True)
     description = Column(Text)
-    release_year = Column(Integer)  # MySQL 'YEAR' can be represented as Integer
+    release_year = Column(Integer)
     language_id = Column(SmallInteger, ForeignKey('language.language_id'), nullable=False)
-    original_language_id = Column(SmallInteger, ForeignKey('language.language_id'))
+    original_language_id = Column(SmallInteger, ForeignKey('language.language_id'), nullable=True)
     rental_duration = Column(SmallInteger, nullable=False, default=3)
     rental_rate = Column(DECIMAL(4, 2), nullable=False, default=4.99)
     length = Column(SmallInteger)
     replacement_cost = Column(DECIMAL(5, 2), nullable=False, default=19.99)
     rating = Column(Enum('G', 'PG', 'PG-13', 'R', 'NC-17'))
-    special_features = Column(SET('Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes'))
+    special_features = Column(String(255))  # Reemplazo de SET por String
     last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     inventories = relationship("Inventory", back_populates="film")
+    language = relationship("Language", foreign_keys=[language_id])
+    original_language = relationship("Language", foreign_keys=[original_language_id])
 
 
 class Inventory(Base):
@@ -69,3 +71,11 @@ class Store(Base):
     last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     inventories = relationship("Inventory", back_populates="store")
+
+
+class Language(Base):
+    __tablename__ = 'language'
+
+    language_id = Column(SmallInteger, primary_key=True, autoincrement=True)
+    name = Column(String(20), nullable=False)
+    last_update = Column(TIMESTAMP, nullable=False)
