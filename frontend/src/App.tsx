@@ -9,7 +9,7 @@ import './styles.css';
 const App = () => {
     return (
         <Router>
-            <div className="container">
+            <div className="bg-red-500 text-white p-4">
                 <h1>Actors Management</h1>
                 <nav>
                     <ul>
