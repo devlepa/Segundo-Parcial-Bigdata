@@ -8,5 +8,6 @@ conn = pymysql.connect(
     port=3306
 )
 
+
 print("✅ Conexión exitosa")
 conn.close()

@@ -13,6 +13,7 @@ SessionLocal = database.SessionLocal
 engine = database.engine
 Base = database.Base
 
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI()
@@ -50,6 +51,16 @@ def read_actors(db: Session = Depends(get_db)):
 @app.post("/actors/", response_model=schemas.ActorOut)
 def create_actor(actor: schemas.ActorCreate, db: Session = Depends(get_db)):
     return crud.create_actor(db, actor)
+
+
+@app.get("/check_film_exists/{film_title}")
+def check_film_exists(film_title: str, db: Session = Depends(get_db)):
+    film = db.query(models.Film).filter(models.Film.title == film_title).first()
+    if film:
+        return {"film_id": film.film_id, "title": film.title}
+    else:
+        return {"error": "Film not found"}
+
 
 @app.get("/check_availability/{film_title}", response_model=List[schemas.FilmAvailability])
 def check_availability(film_title: str, db: Session = Depends(get_db)):
