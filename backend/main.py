@@ -17,7 +17,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*:5137, http://localhost:5173, http://ec2-3-91-179-100.compute-1.amazonaws.com:5173"],
+    allow_origins=["*:5137, http://localhost:5173, http://ec2-44-203-144-79.compute-1.amazonaws.com:5173"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -45,21 +45,17 @@ def create_actor(actor: schemas.ActorCreate, db: Session = Depends(get_db)):
 ##
 
 @app.post("/api/rentals")
-def create_rental(
-    inventory_id: int,
-    customer_id: int,
-    staff_id: int,
-    db: Session = Depends(get_db)
-):
-    # Crear un nuevo alquiler
+def create_rental(inventory_id: int, customer_id: int, staff_id: int, db: Session = Depends(get_db)):
+
     new_rental = Rental(
         rental_date=datetime.now(),
         inventory_id=inventory_id,
         customer_id=customer_id,
         staff_id=staff_id,
-        return_date=None,  # Inicialmente no se ha devuelto
+        return_date=None,
         last_update=datetime.now()
     )
+
     db.add(new_rental)
     db.commit()
     db.refresh(new_rental)
