@@ -98,7 +98,7 @@ def check_availability(film_title: str, db: Session = Depends(get_db)):
             "title": film.title,
             "inventory_id": inventory.inventory_id,
             "store_id": inventory.store_id,
-            "store_location": store.store_id,  # Puedes agregar detalles de la tienda
+            "store_location": f"Store {store.store_id}",  # Convertimos a string
             "is_rented": is_rented
         })
 
