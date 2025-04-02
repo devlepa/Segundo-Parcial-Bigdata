@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, TIMESTAMP, SmallInteger
+from sqlalchemy import Column, Integer, String, ForeignKey, DateTime, Boolean, TIMESTAMP, SmallInteger, Text, DECIMAL, Enum, SET
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from database import Base
@@ -12,21 +12,23 @@ class Actor(Base):
     last_update = Column(TIMESTAMP, nullable=False)
 
 ##
+
 class Film(Base):
     __tablename__ = 'film'
 
-    film_id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(255), index=True)
-    description = Column(String)
-    release_year = Column(Integer)
-    language_id = Column(Integer, ForeignKey('language.language_id'))
-    rental_duration = Column(Integer)
-    rental_rate = Column(Integer)
-    length = Column(Integer)
-    replacement_cost = Column(Integer)
-    rating = Column(String(10))
-    special_features = Column(String(100))
-    last_update = Column(DateTime, default=datetime.utcnow)
+    film_id = Column(SmallInteger, primary_key=True, autoincrement=True)
+    title = Column(String(255), nullable=False, index=True)
+    description = Column(Text)
+    release_year = Column(Integer)  # MySQL 'YEAR' can be represented as Integer
+    language_id = Column(SmallInteger, ForeignKey('language.language_id'), nullable=False)
+    original_language_id = Column(SmallInteger, ForeignKey('language.language_id'))
+    rental_duration = Column(SmallInteger, nullable=False, default=3)
+    rental_rate = Column(DECIMAL(4, 2), nullable=False, default=4.99)
+    length = Column(SmallInteger)
+    replacement_cost = Column(DECIMAL(5, 2), nullable=False, default=19.99)
+    rating = Column(Enum('G', 'PG', 'PG-13', 'R', 'NC-17'))
+    special_features = Column(SET('Trailers', 'Commentaries', 'Deleted Scenes', 'Behind the Scenes'))
+    last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     inventories = relationship("Inventory", back_populates="film")
 
@@ -34,10 +36,10 @@ class Film(Base):
 class Inventory(Base):
     __tablename__ = 'inventory'
 
-    inventory_id = Column(Integer, primary_key=True, index=True)
-    film_id = Column(Integer, ForeignKey('film.film_id'))
-    store_id = Column(Integer, ForeignKey('store.store_id'))
-    last_update = Column(DateTime, default=datetime.utcnow)
+    inventory_id = Column(Integer, primary_key=True, autoincrement=True)
+    film_id = Column(SmallInteger, ForeignKey('film.film_id'), nullable=False)
+    store_id = Column(SmallInteger, ForeignKey('store.store_id'), nullable=False)
+    last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     film = relationship("Film", back_populates="inventories")
     rentals = relationship("Rental", back_populates="inventory")
@@ -47,13 +49,13 @@ class Inventory(Base):
 class Rental(Base):
     __tablename__ = 'rental'
 
-    rental_id = Column(Integer, primary_key=True, index=True)
-    rental_date = Column(DateTime, default=datetime.utcnow)
-    inventory_id = Column(Integer, ForeignKey('inventory.inventory_id'))
-    customer_id = Column(Integer)
+    rental_id = Column(Integer, primary_key=True, autoincrement=True)
+    rental_date = Column(DateTime, nullable=False)
+    inventory_id = Column(Integer, ForeignKey('inventory.inventory_id'), nullable=False)
+    customer_id = Column(SmallInteger, nullable=False)
     return_date = Column(DateTime, nullable=True)
-    staff_id = Column(Integer)
-    last_update = Column(DateTime, default=datetime.utcnow)
+    staff_id = Column(SmallInteger, nullable=False)
+    last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     inventory = relationship("Inventory", back_populates="rentals")
 
@@ -61,9 +63,9 @@ class Rental(Base):
 class Store(Base):
     __tablename__ = 'store'
 
-    store_id = Column(Integer, primary_key=True, index=True)
-    manager_staff_id = Column(Integer)
-    address_id = Column(Integer)
-    last_update = Column(DateTime, default=datetime.utcnow)
+    store_id = Column(SmallInteger, primary_key=True, autoincrement=True)
+    manager_staff_id = Column(SmallInteger, unique=True, nullable=False)
+    address_id = Column(SmallInteger, nullable=False)
+    last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     inventories = relationship("Inventory", back_populates="store")
