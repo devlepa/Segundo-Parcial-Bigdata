@@ -10,7 +10,7 @@ const AddActorForm = ({ onRefresh }) => {
         const actor = { first_name: firstName, last_name: lastName };
 
         try {
-            const response = await fetch("http://ec2-44-203-144-79.compute-1.amazonaws.com:8000/actors/", {
+            const response = await fetch("http://ec2-44-203-144-79.compute-1.amazonaws.com:8000/actors", {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
