@@ -19,6 +19,7 @@ export default defineConfig({
         secure: false,
       },
     },
+    allowedHosts: ["ec2-3-87-13-80.compute-1.amazonaws.com"], // Allow this host
   },
   preview: {
     host: "0.0.0.0",

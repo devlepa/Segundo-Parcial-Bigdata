@@ -11,7 +11,7 @@ services:
       - ./backend:/app
     command: uvicorn main:app --host 0.0.0.0 --port 8000
     environment:
-      - UVICORN_HOST=ec2-3-87-13-80.compute-1.amazonaws.com
+      - UVICORN_HOST=0.0.0.0
 
   frontend:
     build:
