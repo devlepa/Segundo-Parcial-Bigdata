@@ -5,6 +5,7 @@ import Home from "./pages/Home";
 import Actors from "./pages/Actors";
 import FilmAvailability from "./pages/FilmAvailability";
 import SearchMovies from "./pages/SearchMovies";
+import RentMovies from "./pages/RentMovies";
 import "./styles.css";
 
 const App: React.FC = () => {
@@ -16,6 +17,7 @@ const App: React.FC = () => {
           <Route path="/actors" element={<Actors />} />
           <Route path="/film-availability" element={<FilmAvailability />} />
           <Route path="/search-movies" element={<SearchMovies />} />
+          <Route path="/rent-movies" element={<RentMovies />} />
         </Routes>
       </Layout>
     </Router>

@@ -1,6 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { FaHome, FaFilm, FaSearch, FaUsers } from "react-icons/fa";
+import {
+  FaHome,
+  FaFilm,
+  FaSearch,
+  FaUsers,
+  FaShoppingCart,
+} from "react-icons/fa";
 
 const Navbar: React.FC = () => {
   return (
@@ -33,6 +39,12 @@ const Navbar: React.FC = () => {
             className="flex items-center text-white text-lg font-medium hover:text-teal-300 transition duration-300"
           >
             <FaSearch className="mr-2" /> Buscar Películas
+          </Link>
+          <Link
+            to="/rent-movies"
+            className="flex items-center text-white text-lg font-medium hover:text-teal-300 transition duration-300"
+          >
+            <FaShoppingCart className="mr-2" /> Alquilar
           </Link>
         </div>
       </div>

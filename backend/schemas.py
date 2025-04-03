@@ -2,12 +2,15 @@ from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 
+
 class ActorBase(BaseModel):
     first_name: str
     last_name: str
 
+
 class ActorCreate(ActorBase):
     pass
+
 
 class ActorOut(ActorBase):
     actor_id: int
@@ -15,7 +18,8 @@ class ActorOut(ActorBase):
 
     class Config:
         orm_mode = True
-    
+
+
 class FilmAvailability(BaseModel):
     film_id: int
     title: str
@@ -26,3 +30,15 @@ class FilmAvailability(BaseModel):
 
     class Config:
         from_attributes = True  # Pydantic v2 - Reemplazo de 'orm_mode'
+
+
+class RentMovieRequest(BaseModel):
+    inventory_id: int
+    customer_id: int
+    staff_id: int
+
+
+class RentMovieResponse(BaseModel):
+    message: str
+    rental_id: int
+    rental_date: datetime

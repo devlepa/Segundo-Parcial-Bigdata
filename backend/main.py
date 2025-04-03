@@ -146,3 +146,58 @@ def check_availability(film_title: str, db: Session = Depends(get_db)):
         raise http_err
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
+
+
+@app.post("/rent_movie/")
+def rent_movie(
+    inventory_id: int,
+    customer_id: int,
+    staff_id: int,
+    db: Session = Depends(get_db),
+):
+    """
+    Endpoint para alquilar una película.
+    """
+    # Verificar si el inventario existe
+    inventory = (
+        db.query(models.Inventory)
+        .filter(models.Inventory.inventory_id == inventory_id)
+        .first()
+    )
+    if not inventory:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Inventory not found",
+        )
+
+    # Verificar si la película ya está alquilada
+    rental = (
+        db.query(models.Rental)
+        .filter(
+            models.Rental.inventory_id == inventory_id,
+            models.Rental.return_date == None,  # No ha sido devuelta
+        )
+        .first()
+    )
+    if rental:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Movie is already rented",
+        )
+
+    # Crear un nuevo registro de alquiler
+    new_rental = models.Rental(
+        rental_date=datetime.utcnow(),
+        inventory_id=inventory_id,
+        customer_id=customer_id,
+        staff_id=staff_id,
+    )
+    db.add(new_rental)
+    db.commit()
+    db.refresh(new_rental)
+
+    return {
+        "message": "Movie rented successfully",
+        "rental_id": new_rental.rental_id,
+        "rental_date": new_rental.rental_date,
+    }
