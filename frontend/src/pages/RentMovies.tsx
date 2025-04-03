@@ -16,6 +16,16 @@ const RentMovies: React.FC = () => {
     setLoading(true);
     setNotification(null);
 
+    // Validar que los campos no estén vacíos
+    if (!inventoryId || !customerId || !staffId) {
+      setNotification({
+        message: "Todos los campos son obligatorios",
+        type: "error",
+      });
+      setLoading(false);
+      return;
+    }
+
     try {
       const response = await fetch("/api/rent_movie/", {
         method: "POST",
@@ -23,15 +33,15 @@ const RentMovies: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          inventory_id: parseInt(inventoryId),
-          customer_id: parseInt(customerId),
-          staff_id: parseInt(staffId),
+          inventory_id: parseInt(inventoryId, 10),
+          customer_id: parseInt(customerId, 10),
+          staff_id: parseInt(staffId, 10),
         }),
       });
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.detail || "Error renting movie");
+        throw new Error(errorData.detail || `Error: ${response.status}`);
       }
 
       const data = await response.json();

@@ -158,6 +158,10 @@ def rent_movie(
     """
     Endpoint para alquilar una película.
     """
+    print(
+        f"Datos recibidos: inventory_id={inventory_id}, customer_id={customer_id}, staff_id={staff_id}"
+    )
+
     # Verificar si el inventario existe
     inventory = (
         db.query(models.Inventory)

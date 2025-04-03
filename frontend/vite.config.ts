@@ -14,7 +14,7 @@ export default defineConfig({
     },
     proxy: {
       "/api": {
-        target: "http://ec2-3-87-13-80.compute-1.amazonaws.com:8000",
+        target: "http://ec2-3-87-13-80.compute-1.amazonaws.com:8000", // Backend URL
         changeOrigin: true,
         secure: false,
       },
