@@ -9,13 +9,12 @@ body {
   margin: 0;
   padding: 0;
   display: flex;
-  justify-content: center;
-  align-items: center;
+  flex-direction: column;
   min-height: 100vh; /* Ensure full height */
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 100%; /* Full width */
   margin: 0 auto;
   padding: 20px;
   background-color: #1e293b; /* Slightly lighter background for contrast */

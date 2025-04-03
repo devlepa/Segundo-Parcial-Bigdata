@@ -25,7 +25,7 @@ const SearchMovies: React.FC = () => {
 
   return (
     <Layout>
-      <div className="container mx-auto p-6 bg-gray-900 rounded-lg shadow-lg text-center flex flex-col items-center">
+      <div className="w-full p-6 bg-gray-900 rounded-lg shadow-lg text-center flex flex-col items-center">
         <h1 className="text-4xl font-bold text-teal-400 mb-8">
           Buscar Películas
         </h1>
