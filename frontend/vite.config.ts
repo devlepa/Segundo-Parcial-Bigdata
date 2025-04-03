@@ -4,7 +4,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    host: "0.0.0.0", // Permitir accesos externos
+    host: "0.0.0.0",
     port: 5173,
     strictPort: true,
     cors: true,
@@ -19,7 +19,7 @@ export default defineConfig({
         secure: false,
       },
     },
-    allowedHosts: ["ec2-3-87-13-80.compute-1.amazonaws.com"], // Allow this host
+    allowedHosts: ["ec2-3-87-13-80.compute-1.amazonaws.com"],
   },
   preview: {
     host: "0.0.0.0",
