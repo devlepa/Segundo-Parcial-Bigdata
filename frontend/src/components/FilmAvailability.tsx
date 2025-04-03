@@ -17,7 +17,7 @@ const FilmAvailability: React.FC = () => {
     };
 
     return (
-        <div>
+        <div className="p-4">
             <h1 className="text-3xl mb-4">Check Film Availability</h1>
             <input
                 type="text"
