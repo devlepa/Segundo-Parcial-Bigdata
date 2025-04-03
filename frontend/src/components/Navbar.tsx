@@ -5,11 +5,11 @@ import { FaHome, FaFilm, FaSearch, FaUsers } from "react-icons/fa";
 const Navbar: React.FC = () => {
   return (
     <nav className="bg-gradient-to-r from-teal-800 via-teal-700 to-teal-800 p-4 shadow-lg w-full">
-      <div className="container mx-auto flex flex-wrap justify-between items-center">
+      <div className="container mx-auto flex justify-between items-center">
         <h1 className="text-3xl font-extrabold text-teal-300 tracking-wide">
           🎥 Blockbuster
         </h1>
-        <div className="flex space-x-4 mt-4 sm:mt-0">
+        <div className="flex space-x-4">
           <Link
             to="/"
             className="flex items-center text-white text-lg font-medium hover:text-teal-300 transition duration-300"

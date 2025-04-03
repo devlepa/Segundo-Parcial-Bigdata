@@ -10,6 +10,8 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
+  align-items: center; /* Center horizontally */
+  justify-content: center; /* Center vertically */
   min-height: 100vh; /* Ensure full height */
 }
 
@@ -20,6 +22,9 @@ body {
   background-color: #1e293b; /* Slightly lighter background for contrast */
   border-radius: 8px;
   box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
 }
 
 h1 {
@@ -125,6 +130,9 @@ nav a:hover {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content horizontally */
 }
 
 .card:hover {
@@ -139,8 +147,10 @@ nav a:hover {
 
 .card h3 {
   color: #38bdf8; /* Teal color */
+  text-align: center;
 }
 
 .card p {
   color: #94a3b8; /* Light gray */
+  text-align: center;
 }

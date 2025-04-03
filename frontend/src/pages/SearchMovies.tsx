@@ -29,7 +29,7 @@ const SearchMovies: React.FC = () => {
         <h1 className="text-4xl font-bold text-teal-400 mb-8">
           Buscar Películas
         </h1>
-        <div className="flex flex-col sm:flex-row justify-center mb-8 w-full">
+        <div className="flex flex-col sm:flex-row justify-center items-center mb-8 w-full">
           <input
             type="text"
             value={filmTitle}
@@ -46,7 +46,7 @@ const SearchMovies: React.FC = () => {
         </div>
         {loading && <Loader />}
         {error && <Notification message={error} type="error" />}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full justify-items-center">
           {movies.map((movie) => (
             <div
               key={movie.inventory_id}
