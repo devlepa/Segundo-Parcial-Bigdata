@@ -27,6 +27,12 @@ const RentMovies: React.FC = () => {
     }
 
     try {
+      console.log("Enviando datos al backend:", {
+        inventory_id: parseInt(inventoryId, 10),
+        customer_id: parseInt(customerId, 10),
+        staff_id: parseInt(staffId, 10),
+      });
+
       const response = await fetch("/api/rent_movie/", {
         method: "POST",
         headers: {
@@ -41,12 +47,15 @@ const RentMovies: React.FC = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
+        console.error("Error en la respuesta del backend:", errorData);
         throw new Error(errorData.detail || `Error: ${response.status}`);
       }
 
       const data = await response.json();
+      console.log("Respuesta del backend:", data);
       setNotification({ message: data.message, type: "success" });
     } catch (error: any) {
+      console.error("Error al realizar la solicitud:", error.message);
       setNotification({ message: error.message, type: "error" });
     } finally {
       setLoading(false);

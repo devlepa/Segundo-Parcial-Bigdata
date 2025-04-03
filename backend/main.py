@@ -159,7 +159,7 @@ def rent_movie(
     Endpoint para alquilar una película.
     """
     print(
-        f"Datos recibidos: inventory_id={inventory_id}, customer_id={customer_id}, staff_id={staff_id}"
+        f"Solicitud recibida en /rent_movie/: inventory_id={inventory_id}, customer_id={customer_id}, staff_id={staff_id}"
     )
 
     # Verificar si el inventario existe
@@ -169,6 +169,7 @@ def rent_movie(
         .first()
     )
     if not inventory:
+        print(f"Inventario no encontrado: inventory_id={inventory_id}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Inventory not found",
@@ -184,6 +185,7 @@ def rent_movie(
         .first()
     )
     if rental:
+        print(f"Película ya alquilada: inventory_id={inventory_id}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Movie is already rented",
@@ -200,6 +202,7 @@ def rent_movie(
     db.commit()
     db.refresh(new_rental)
 
+    print(f"Película alquilada exitosamente: rental_id={new_rental.rental_id}")
     return {
         "message": "Movie rented successfully",
         "rental_id": new_rental.rental_id,
