@@ -1,14 +1,13 @@
-import React from 'react';
-import Banner from '../components/Banner';
-import MovieGrid from '../components/MovieGrid';
+import React from "react";
+import Hero from "../components/Hero";
+import Layout from "../components/Layout";
 
 const Home: React.FC = () => {
-    return (
-        <div>
-            <Banner />
-            <MovieGrid />
-        </div>
-    );
+  return (
+    <Layout>
+      <Hero />
+    </Layout>
+  );
 };
 
 export default Home;
