@@ -8,17 +8,25 @@ body {
   color: #e2e8f0; /* Light text */
   margin: 0;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Ensure full height */
 }
 
 .container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
+  background-color: #2d3748; /* Slightly lighter background for contrast */
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
 }
 
 h1 {
   font-family: "Poppins", sans-serif;
   color: #ffd700; /* Gold color */
+  text-align: center;
 }
 
 form {
@@ -98,4 +106,15 @@ a {
 
 a:hover {
   color: #ffd700; /* Gold color for hover */
+}
+
+nav a {
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.3s, transform 0.2s;
+}
+
+nav a:hover {
+  color: #ffd700; /* Gold color for hover */
+  transform: scale(1.1);
 }

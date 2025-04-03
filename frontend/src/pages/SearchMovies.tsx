@@ -18,11 +18,11 @@ const SearchMovies: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 bg-gray-800 rounded-lg shadow-lg text-center">
+    <div className="container mx-auto p-6 bg-gray-800 rounded-lg shadow-lg text-center flex flex-col items-center">
       <h1 className="text-4xl font-bold text-yellow-400 mb-8">
         Buscar Películas
       </h1>
-      <div className="flex justify-center mb-8">
+      <div className="flex justify-center mb-8 w-full">
         <input
           type="text"
           value={filmTitle}

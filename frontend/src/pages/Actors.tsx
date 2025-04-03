@@ -14,7 +14,7 @@ const Actors: React.FC = () => {
   if (error) return <div className="text-red-500 text-center">{error}</div>;
 
   return (
-    <div className="container mx-auto p-6 bg-gray-800 rounded-lg shadow-lg text-center">
+    <div className="container mx-auto p-6 bg-gray-800 rounded-lg shadow-lg text-center flex flex-col items-center">
       <h1 className="text-4xl font-bold text-yellow-400 mb-8">
         Lista de Actores
       </h1>

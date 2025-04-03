@@ -10,7 +10,7 @@ import "./index.css";
 const App: React.FC = () => {
   return (
     <Router>
-      <div className="bg-gray-900 min-h-screen text-white">
+      <div className="bg-gray-900 min-h-screen flex flex-col justify-center items-center text-white">
         <Navbar />
         <div className="container mx-auto py-8">
           <Routes>
