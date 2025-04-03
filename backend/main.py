@@ -192,19 +192,27 @@ def rent_movie(
         )
 
     # Crear un nuevo registro de alquiler
-    new_rental = models.Rental(
-        rental_date=datetime.utcnow(),
-        inventory_id=inventory_id,
-        customer_id=customer_id,
-        staff_id=staff_id,
-    )
-    db.add(new_rental)
-    db.commit()
-    db.refresh(new_rental)
+    try:
+        new_rental = models.Rental(
+            rental_date=datetime.utcnow(),
+            inventory_id=inventory_id,
+            customer_id=customer_id,
+            staff_id=staff_id,
+        )
+        db.add(new_rental)
+        db.commit()
+        db.refresh(new_rental)
 
-    print(f"Película alquilada exitosamente: rental_id={new_rental.rental_id}")
-    return {
-        "message": "Movie rented successfully",
-        "rental_id": new_rental.rental_id,
-        "rental_date": new_rental.rental_date,
-    }
+        print(f"Película alquilada exitosamente: rental_id={new_rental.rental_id}")
+        return {
+            "message": "Movie rented successfully",
+            "rental_id": new_rental.rental_id,
+            "rental_date": new_rental.rental_date,
+        }
+    except Exception as e:
+        print(f"Error al alquilar la película: {str(e)}")
+        db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while renting the movie.",
+        )
