@@ -6,7 +6,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div className="bg-gray-900 min-h-screen flex flex-col">
       <Navbar />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow container mx-auto py-8">{children}</main>
       <Footer />
     </div>
   );

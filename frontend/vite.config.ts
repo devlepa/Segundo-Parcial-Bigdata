@@ -9,7 +9,7 @@ export default defineConfig({
     strictPort: true,
     cors: true,
     hmr: {
-      host: "ec2-3-82-194-178.compute-1.amazonaws.com",
+      host: "ec2-3-87-13-80.compute-1.amazonaws.com",
       port: 5173,
     },
     proxy: {
