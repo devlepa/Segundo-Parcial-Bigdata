@@ -12,12 +12,14 @@ const App: React.FC = () => {
     <Router>
       <div className="bg-gray-900 min-h-screen text-white">
         <Navbar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/actors" element={<Actors />} />
-          <Route path="/film-availability" element={<FilmAvailability />} />
-          <Route path="/search-movies" element={<SearchMovies />} />
-        </Routes>
+        <div className="container mx-auto py-8">
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/actors" element={<Actors />} />
+            <Route path="/film-availability" element={<FilmAvailability />} />
+            <Route path="/search-movies" element={<SearchMovies />} />
+          </Routes>
+        </div>
       </div>
     </Router>
   );

@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Poppins", sans-serif;
   background-color: #1a202c; /* Dark background */
   color: #e2e8f0; /* Light text */
   margin: 0;
@@ -14,16 +14,11 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 20px;
-  font-family: "Arial Black", sans-serif;
-  color: #ffffff;
+  font-family: "Poppins", sans-serif;
+  color: #ffd700; /* Gold color */
 }
 
 form {
@@ -94,4 +89,13 @@ tr:hover {
 
 .refresh-btn:hover {
   background-color: #007bb5;
+}
+
+a {
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+a:hover {
+  color: #ffd700; /* Gold color for hover */
 }
