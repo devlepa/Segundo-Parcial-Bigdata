@@ -64,65 +64,85 @@ def check_film_exists(film_title: str, db: Session = Depends(get_db)):
         return {"error": "Film not found"}
 
 
+@app.get("/health")
+def health_check(db: Session = Depends(get_db)):
+    """
+    Endpoint para verificar la conexión con la base de datos.
+    """
+    try:
+        # Intentar realizar una consulta simple
+        db.execute("SELECT 1")
+        return {"status": "ok", "message": "Database connection successful"}
+    except Exception as e:
+        raise HTTPException(
+            status_code=500, detail=f"Database connection error: {str(e)}"
+        )
+
+
 @app.get(
     "/check_availability/{film_title}", response_model=List[schemas.FilmAvailability]
 )
 def check_availability(film_title: str, db: Session = Depends(get_db)):
-    # Buscar la película por título
-    film = db.query(models.Film).filter(models.Film.title == film_title).first()
+    try:
+        # Buscar la película por título
+        film = db.query(models.Film).filter(models.Film.title == film_title).first()
 
-    if not film:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND, detail="Film not found"
-        )
-
-    # Buscar inventarios relacionados con el film_id encontrado
-    inventories = (
-        db.query(models.Inventory)
-        .filter(models.Inventory.film_id == film.film_id)
-        .all()
-    )
-
-    if not inventories:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="No inventories found for this film",
-        )
-
-    availability = []
-
-    for inventory in inventories:
-        # Consultar la tienda donde se encuentra el inventario
-        store = (
-            db.query(models.Store)
-            .filter(models.Store.store_id == inventory.store_id)
-            .first()
-        )
-
-        if not store:
-            continue
-
-        # Verificar si el inventario está alquilado actualmente
-        rental = (
-            db.query(models.Rental)
-            .filter(
-                models.Rental.inventory_id == inventory.inventory_id,
-                models.Rental.return_date == None,
+        if not film:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND, detail="Film not found"
             )
-            .first()
+
+        # Buscar inventarios relacionados con el film_id encontrado
+        inventories = (
+            db.query(models.Inventory)
+            .filter(models.Inventory.film_id == film.film_id)
+            .all()
         )
 
-        is_rented = rental is not None
+        if not inventories:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="No inventories found for this film",
+            )
 
-        availability.append(
-            {
-                "film_id": film.film_id,
-                "title": film.title,
-                "inventory_id": inventory.inventory_id,
-                "store_id": inventory.store_id,
-                "store_location": f"Store {store.store_id}",  # Convertimos a string
-                "is_rented": is_rented,
-            }
-        )
+        availability = []
 
-    return availability
+        for inventory in inventories:
+            # Consultar la tienda donde se encuentra el inventario
+            store = (
+                db.query(models.Store)
+                .filter(models.Store.store_id == inventory.store_id)
+                .first()
+            )
+
+            if not store:
+                continue
+
+            # Verificar si el inventario está alquilado actualmente
+            rental = (
+                db.query(models.Rental)
+                .filter(
+                    models.Rental.inventory_id == inventory.inventory_id,
+                    models.Rental.return_date == None,
+                )
+                .first()
+            )
+
+            is_rented = rental is not None
+
+            availability.append(
+                {
+                    "film_id": film.film_id,
+                    "title": film.title,
+                    "inventory_id": inventory.inventory_id,
+                    "store_id": inventory.store_id,
+                    "store_location": f"Store {store.store_id}",  # Convertimos a string
+                    "is_rented": is_rented,
+                }
+            )
+
+        return availability
+    except HTTPException as http_err:
+        raise http_err
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
