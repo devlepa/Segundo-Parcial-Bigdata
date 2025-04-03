@@ -4,14 +4,15 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #f0f0f0;
+  background-color: #1a202c; /* Dark background */
+  color: #e2e8f0; /* Light text */
   margin: 0;
   padding: 0;
 }
 
 .container {
-  width: 80%;
-  margin: auto;
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 20px;
   background-color: white;
   border-radius: 8px;
@@ -22,7 +23,7 @@ h1 {
   text-align: center;
   margin-bottom: 20px;
   font-family: "Arial Black", sans-serif;
-  color: #ff0000;
+  color: #ffffff;
 }
 
 form {
@@ -45,12 +46,12 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: transform 0.2s;
   font-weight: bold;
 }
 
 button:hover {
-  background-color: #45a049;
+  transform: scale(1.05);
 }
 
 table {

@@ -18,25 +18,27 @@ const SearchMovies: React.FC = () => {
   };
 
   return (
-    <div className="p-4">
-      <h1 className="text-4xl text-center mb-6">Search Movies</h1>
-      <div className="flex justify-center mb-6">
+    <div className="container mx-auto p-6">
+      <h1 className="text-4xl font-bold text-center text-white mb-8">
+        Search Movies
+      </h1>
+      <div className="flex justify-center mb-8">
         <input
           type="text"
           value={filmTitle}
           onChange={(e) => setFilmTitle(e.target.value)}
           placeholder="Enter movie title..."
-          className="p-2 border rounded-l-md w-1/2"
+          className="p-3 border rounded-l-md w-1/2"
         />
         <button
           onClick={handleSearch}
-          className="bg-red-600 text-white px-4 rounded-r-md"
+          className="bg-green-600 text-white px-6 rounded-r-md hover:bg-green-700"
         >
           Search
         </button>
       </div>
-      {error && <div className="text-red-500 text-center">{error}</div>}
-      <div className="grid grid-cols-4 gap-4">
+      {error && <div className="text-red-500 text-center mb-4">{error}</div>}
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {movies.map((movie) => (
           <MovieCard
             key={movie.inventory_id}
