@@ -22,11 +22,11 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://ec2-52-91-61-104.compute-1.amazonaws.com:5173",  # Updated Frontend Domain
-        "http://localhost:5173",  # Para desarrollo local
+        "http://localhost:5173",  # For local development
     ],
     allow_credentials=True,
-    allow_methods=["*"],  # Permitir todos los métodos HTTP (GET, POST, etc.)
-    allow_headers=["*"],  # Permitir todos los encabezados
+    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
+    allow_headers=["*"],  # Allow all headers
 )
 
 
