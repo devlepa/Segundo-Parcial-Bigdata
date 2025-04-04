@@ -51,8 +51,11 @@ const RentMovies: React.FC = () => {
     }
   };
 
+  const defaultMovieImage =
+    "https://via.placeholder.com/300x450?text=Película+Por+Defecto";
+
   return (
-    <div className="container my-5">
+    <div className="my-5">
       <h1 className="text-center text-warning mb-4">🎥 Alquilar Películas</h1>
       <div className="row">
         <div className="col-md-8">
@@ -61,7 +64,7 @@ const RentMovies: React.FC = () => {
               <div className="col-md-4" key={movie}>
                 <div className="card bg-dark text-white shadow-lg">
                   <img
-                    src={`https://via.placeholder.com/300x450?text=Película+${movie}`}
+                    src={defaultMovieImage}
                     className="card-img-top"
                     alt={`Película ${movie}`}
                   />

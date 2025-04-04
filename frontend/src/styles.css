@@ -8,21 +8,12 @@ body {
   color: #e2e8f0; /* Light text */
   margin: 0;
   padding: 0;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensure full height */
 }
 
 .container {
-  width: 100%; /* Full width */
+  max-width: 100%; /* Full width */
   margin: 0 auto;
   padding: 20px;
-  background-color: #1e293b; /* Slightly lighter background for contrast */
-  border-radius: 8px;
-  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center content horizontally */
 }
 
 h1 {
@@ -123,18 +114,11 @@ nav a:hover {
 }
 
 .card {
-  background-color: #1e293b; /* Darker background for cards */
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  padding: 20px;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center content horizontally */
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: scale(1.05);
   box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
 }
 
