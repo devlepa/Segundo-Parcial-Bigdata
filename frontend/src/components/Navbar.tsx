@@ -1,12 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import {
-  FaHome,
-  FaFilm,
-  FaSearch,
-  FaUsers,
-  FaShoppingCart,
-} from "react-icons/fa";
+import { FaFilm, FaSearch, FaUsers, FaShoppingCart } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
   return (
@@ -16,12 +10,6 @@ const Navbar: React.FC = () => {
           🎥 Blockbuster
         </h1>
         <div className="flex space-x-4">
-          <Link
-            to="/"
-            className="flex items-center text-white text-lg font-medium hover:text-teal-300 transition duration-300"
-          >
-            <FaHome className="mr-2" /> Home
-          </Link>
           <Link
             to="/actors"
             className="flex items-center text-white text-lg font-medium hover:text-teal-300 transition duration-300"
