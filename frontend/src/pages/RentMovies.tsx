@@ -16,7 +16,6 @@ const RentMovies: React.FC = () => {
     setLoading(true);
     setNotification(null);
 
-    // Validar que los campos no estén vacíos
     if (!inventoryId || !customerId || !staffId) {
       setNotification({
         message: "Todos los campos son obligatorios",
@@ -27,12 +26,6 @@ const RentMovies: React.FC = () => {
     }
 
     try {
-      console.log("Enviando datos al backend:", {
-        inventory_id: parseInt(inventoryId, 10),
-        customer_id: parseInt(customerId, 10),
-        staff_id: parseInt(staffId, 10),
-      });
-
       const response = await fetch("/api/rent_movie/", {
         method: "POST",
         headers: {
@@ -47,15 +40,12 @@ const RentMovies: React.FC = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        console.error("Error en la respuesta del backend:", errorData);
         throw new Error(errorData.detail || `Error: ${response.status}`);
       }
 
       const data = await response.json();
-      console.log("Respuesta del backend:", data);
       setNotification({ message: data.message, type: "success" });
     } catch (error: any) {
-      console.error("Error al realizar la solicitud:", error.message);
       setNotification({ message: error.message, type: "error" });
     } finally {
       setLoading(false);
@@ -64,11 +54,16 @@ const RentMovies: React.FC = () => {
 
   return (
     <Layout>
-      <div className="w-full p-6 bg-gray-900 rounded-lg shadow-lg text-center flex flex-col items-center">
-        <h1 className="text-4xl font-bold text-teal-400 mb-8">
+      <div className="w-full max-w-4xl p-6 bg-gray-800 rounded-lg shadow-lg text-center">
+        <img
+          src="https://via.placeholder.com/1200x400?text=Alquilar+Películas"
+          alt="Rent Movies"
+          className="rounded-lg mb-8"
+        />
+        <h1 className="text-4xl font-bold text-yellow-400 mb-8">
           Alquilar Películas
         </h1>
-        <div className="flex flex-col gap-4 w-full sm:w-1/2">
+        <div className="flex flex-col gap-4">
           <input
             type="text"
             value={inventoryId}

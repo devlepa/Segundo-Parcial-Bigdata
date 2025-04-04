@@ -5,7 +5,7 @@ const Hero: React.FC = () => {
     <div
       className="relative bg-cover bg-center h-[500px] text-white"
       style={{
-        backgroundImage: `url('https://image.tmdb.org/t/p/original/b6W4uKwgf4nN7eOqGKBzMnTbycV.jpg')`,
+        backgroundImage: `url('https://via.placeholder.com/1200x500?text=Bienvenido+a+Blockbuster')`,
       }}
     >
       <div className="absolute inset-0 bg-black bg-opacity-50"></div>

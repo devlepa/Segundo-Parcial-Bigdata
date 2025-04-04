@@ -10,13 +10,11 @@ body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Center horizontally */
-  justify-content: center; /* Center vertically */
   min-height: 100vh; /* Ensure full height */
 }
 
 .container {
-  max-width: 100%; /* Full width */
+  width: 100%; /* Full width */
   margin: 0 auto;
   padding: 20px;
   background-color: #1e293b; /* Slightly lighter background for contrast */
