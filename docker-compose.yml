@@ -23,4 +23,4 @@ services:
       - ./frontend:/app
     environment:
       - CHOKIDAR_USEPOLLING=true
-      - VITE_BACKEND_URL=http://ec2-3-87-13-80.compute-1.amazonaws.com:8000
+      - VITE_BACKEND_URL=http://ec2-52-91-61-104.compute-1.amazonaws.com:8000 # Updated Backend URL
