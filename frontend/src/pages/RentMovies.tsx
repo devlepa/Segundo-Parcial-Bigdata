@@ -52,46 +52,79 @@ const RentMovies: React.FC = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl p-6 bg-gray-800 rounded-lg shadow-lg text-center">
-      <img
-        src="https://via.placeholder.com/1200x400?text=Alquilar+Películas"
-        alt="Rent Movies"
-        className="rounded-lg mb-8"
-      />
-      <h1 className="text-4xl font-bold text-yellow-400 mb-8">
-        Alquilar Películas
-      </h1>
-      <div className="flex flex-col gap-4">
-        <input
-          type="text"
-          value={inventoryId}
-          onChange={(e) => setInventoryId(e.target.value)}
-          placeholder="ID del Inventario"
-          className="p-3 border rounded-md w-full"
-        />
-        <input
-          type="text"
-          value={customerId}
-          onChange={(e) => setCustomerId(e.target.value)}
-          placeholder="ID del Cliente"
-          className="p-3 border rounded-md w-full"
-        />
-        <input
-          type="text"
-          value={staffId}
-          onChange={(e) => setStaffId(e.target.value)}
-          placeholder="ID del Empleado"
-          className="p-3 border rounded-md w-full"
-        />
-        <button
-          onClick={handleRentMovie}
-          className={`bg-teal-600 text-white px-6 py-3 rounded-md hover:bg-teal-700 transition duration-300 ${
-            loading ? "opacity-50 cursor-not-allowed" : ""
-          }`}
-          disabled={loading}
-        >
-          {loading ? "Procesando..." : "Alquilar"}
-        </button>
+    <div className="container my-5">
+      <h1 className="text-center text-warning mb-4">🎥 Alquilar Películas</h1>
+      <div className="row">
+        <div className="col-md-8">
+          <div className="row g-4">
+            {[1, 2, 3, 4, 5, 6].map((movie) => (
+              <div className="col-md-4" key={movie}>
+                <div className="card bg-dark text-white shadow-lg">
+                  <img
+                    src={`https://via.placeholder.com/300x450?text=Película+${movie}`}
+                    className="card-img-top"
+                    alt={`Película ${movie}`}
+                  />
+                  <div className="card-body">
+                    <h5 className="card-title">Película {movie}</h5>
+                    <p className="card-text">
+                      Una breve descripción de la película {movie}.
+                    </p>
+                    <button className="btn btn-warning w-100">Alquilar</button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+        <div className="col-md-4">
+          <div className="card bg-dark text-white shadow-lg p-4">
+            <h4 className="text-center mb-4">Formulario de Alquiler</h4>
+            <div className="mb-3">
+              <label htmlFor="inventoryId" className="form-label">
+                ID del Inventario
+              </label>
+              <input
+                type="text"
+                id="inventoryId"
+                className="form-control"
+                value={inventoryId}
+                onChange={(e) => setInventoryId(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="customerId" className="form-label">
+                ID del Cliente
+              </label>
+              <input
+                type="text"
+                id="customerId"
+                className="form-control"
+                value={customerId}
+                onChange={(e) => setCustomerId(e.target.value)}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="staffId" className="form-label">
+                ID del Empleado
+              </label>
+              <input
+                type="text"
+                id="staffId"
+                className="form-control"
+                value={staffId}
+                onChange={(e) => setStaffId(e.target.value)}
+              />
+            </div>
+            <button
+              className="btn btn-warning w-100"
+              onClick={handleRentMovie}
+              disabled={loading}
+            >
+              {loading ? "Procesando..." : "Alquilar"}
+            </button>
+          </div>
+        </div>
       </div>
       {notification && (
         <Notification message={notification.message} type={notification.type} />
