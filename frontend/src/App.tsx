@@ -10,41 +10,15 @@ import "./styles.css";
 const App: React.FC = () => {
   return (
     <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Layout>
-              <RentMovies />
-            </Layout>
-          }
-        />{" "}
-        {/* Root points to RentMovies */}
-        <Route
-          path="/actors"
-          element={
-            <Layout>
-              <Actors />
-            </Layout>
-          }
-        />
-        <Route
-          path="/film-availability"
-          element={
-            <Layout>
-              <FilmAvailability />
-            </Layout>
-          }
-        />
-        <Route
-          path="/search-movies"
-          element={
-            <Layout>
-              <SearchMovies />
-            </Layout>
-          }
-        />
-      </Routes>
+      <Layout>
+        <Routes>
+          <Route path="/" element={<RentMovies />} />{" "}
+          {/* Root points to RentMovies */}
+          <Route path="/actors" element={<Actors />} />
+          <Route path="/film-availability" element={<FilmAvailability />} />
+          <Route path="/search-movies" element={<SearchMovies />} />
+        </Routes>
+      </Layout>
     </Router>
   );
 };

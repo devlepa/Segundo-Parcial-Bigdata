@@ -7,7 +7,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div className="bg-gray-900 min-h-screen flex flex-col w-full">
       <Navbar /> {/* Navbar included only once */}
       <main className="flex-grow w-full flex justify-center items-center">
-        {children}
+        {children} {/* Render the content of the current route */}
       </main>
       <Footer />
     </div>
