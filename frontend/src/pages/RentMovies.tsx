@@ -103,12 +103,21 @@ const RentMovies: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[1, 2, 3, 4, 5, 6].map((movie) => (
-            <MovieCard
-              key={movie}
-              title={`Película ${movie}`}
-              description={`Una breve descripción de la película ${movie}.`}
-              image="https://via.placeholder.com/300x450?text=Película+Por+Defecto"
-            />
+            <div className="col-md-4" key={movie}>
+              <div className="card bg-dark text-white shadow-lg">
+                <img
+                  src="https://images.pexels.com/photos/799132/pexels-photo-799132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+                  className="card-img-top"
+                  alt={`Película ${movie}`}
+                />
+                <div className="card-body">
+                  <h5 className="card-title">Película {movie}</h5>
+                  <p className="card-text">
+                    Una breve descripción de la película {movie}.
+                  </p>
+                </div>
+              </div>
+            </div>
           ))}
         </div>
         <div className="bg-white shadow-lg rounded-lg p-6">

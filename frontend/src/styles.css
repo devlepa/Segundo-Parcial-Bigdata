@@ -134,6 +134,11 @@ nav a:hover {
 .card img {
   border-radius: 8px;
   object-fit: cover;
+  height: 300px; /* Set a consistent height */
+  width: 100%; /* Full width */
+  background-image: url("https://images.pexels.com/photos/799132/pexels-photo-799132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+  background-size: cover;
+  background-position: center;
 }
 
 .card h3 {
@@ -157,6 +162,21 @@ nav a:hover {
 .alert {
   font-weight: bold;
   text-align: center;
+}
+
+.hero {
+  background-image: url("https://images.pexels.com/photos/799132/pexels-photo-799132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+  background-size: cover;
+  background-position: center;
+  height: 500px;
+  position: relative;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* Add a dark overlay */
 }
 
 footer {
