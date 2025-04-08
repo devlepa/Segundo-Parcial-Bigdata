@@ -108,15 +108,13 @@ const RentMovies: React.FC = () => {
       <h1 className="text-4xl font-bold text-teal-400 mb-6">
         🎥 Alquilar Películas
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <img
-            src="https://images.pexels.com/photos/799132/pexels-photo-799132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-            alt="Películas"
-            className="rounded-lg shadow-lg"
-          />
-        </div>
-        <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
+      <div className="flex flex-col items-center gap-6">
+        <img
+          src="https://image.tmdb.org/t/p/w300/6KErczPBROQty7QoIsaa6wJYXZi.jpg"
+          alt="Película"
+          className="rounded-lg shadow-lg w-64"
+        />
+        <div className="bg-gray-700 p-6 rounded-lg shadow-lg w-full">
           <h2 className="text-2xl font-semibold text-white mb-4">
             Formulario de Alquiler
           </h2>
