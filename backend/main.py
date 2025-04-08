@@ -16,7 +16,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://ec2-18-234-101-246.compute-1.amazonaws.com:5173",  # Frontend Domain
+        "http://ec2-44-211-131-205.compute-1.amazonaws.com:5173",  # Frontend Domain
         "http://localhost:5173",  # For local development
     ],
     allow_credentials=True,
