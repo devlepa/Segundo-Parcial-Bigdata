@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Notification from "../components/Notification";
+import Loader from "../components/Loader";
 
 const RentMovies: React.FC = () => {
   const [inventoryId, setInventoryId] = useState("");
@@ -25,20 +26,17 @@ const RentMovies: React.FC = () => {
     }
 
     try {
-      const response = await fetch(
-        "http://ec2-54-197-103-116.compute-1.amazonaws.com:8000/rent_movie/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            inventory_id: parseInt(inventoryId, 10),
-            customer_id: parseInt(customerId, 10),
-            staff_id: parseInt(staffId, 10),
-          }),
-        }
-      );
+      const response = await fetch("/api/rent_movie/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          inventory_id: parseInt(inventoryId, 10),
+          customer_id: parseInt(customerId, 10),
+          staff_id: parseInt(staffId, 10),
+        }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -97,7 +95,7 @@ const RentMovies: React.FC = () => {
   };
 
   return (
-    <div className="my-5">
+    <div className="container my-5">
       <h1 className="text-center text-warning mb-4">🎥 Alquilar Películas</h1>
       <div className="row">
         <div className="col-md-8">
@@ -165,7 +163,7 @@ const RentMovies: React.FC = () => {
               onClick={handleRentMovie}
               disabled={loading}
             >
-              {loading ? "Procesando..." : "Alquilar"}
+              {loading ? <Loader /> : "Alquilar"}
             </button>
             <button
               className="btn btn-warning w-100 mt-2"
@@ -185,5 +183,3 @@ const RentMovies: React.FC = () => {
 };
 
 export default RentMovies;
-
-

@@ -145,6 +145,11 @@ nav a:hover {
   color: #adb5bd; /* Light gray */
 }
 
+.alert {
+  font-weight: bold;
+  text-align: center;
+}
+
 footer {
   background-color: #343a40; /* Dark footer background */
   color: #adb5bd; /* Light gray text */

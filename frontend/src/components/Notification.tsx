@@ -6,11 +6,12 @@ interface NotificationProps {
 }
 
 const Notification: React.FC<NotificationProps> = ({ message, type }) => {
-  const bgColor = type === "success" ? "bg-green-500" : "bg-red-500";
-
   return (
     <div
-      className={`${bgColor} text-white px-4 py-2 rounded shadow-lg fixed top-4 right-4`}
+      className={`alert ${
+        type === "success" ? "alert-success" : "alert-danger"
+      } mt-3`}
+      role="alert"
     >
       {message}
     </div>
