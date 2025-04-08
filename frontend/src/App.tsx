@@ -9,13 +9,22 @@ import Layout from "./components/Layout";
 import RentMovies from "./pages/RentMovies";
 import FilmAvailability from "./pages/FilmAvailability";
 import SearchMovies from "./pages/SearchMovies";
+import Actors from "./pages/Actors";
+import Home from "./pages/Home";
 import "./styles.css";
 
 const App: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Navigate to="/rent-movies" replace />} />
+        <Route
+          path="/"
+          element={
+            <Layout>
+              <Home />
+            </Layout>
+          }
+        />
         <Route
           path="/rent-movies"
           element={
@@ -40,6 +49,15 @@ const App: React.FC = () => {
             </Layout>
           }
         />
+        <Route
+          path="/actors"
+          element={
+            <Layout>
+              <Actors />
+            </Layout>
+          }
+        />
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Router>
   );
