@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Notification from "../components/Notification";
 import Loader from "../components/Loader";
-import MovieCard from "../components/MovieCard";
 
 const RentMovies: React.FC = () => {
   const [inventoryId, setInventoryId] = useState("");
@@ -67,19 +66,16 @@ const RentMovies: React.FC = () => {
     }
 
     try {
-      const response = await fetch(
-        "http://ec2-54-197-103-116.compute-1.amazonaws.com:8000/return_movie/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            inventory_id: parseInt(inventoryId, 10),
-            customer_id: parseInt(customerId, 10),
-          }),
-        }
-      );
+      const response = await fetch("/api/return_movie/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          inventory_id: parseInt(inventoryId, 10),
+          customer_id: parseInt(customerId, 10),
+        }),
+      });
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -96,79 +92,67 @@ const RentMovies: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto my-10">
-      <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
+    <div className="text-center">
+      <h1 className="text-4xl font-bold text-teal-400 mb-6">
         🎥 Alquilar Películas
       </h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3, 4, 5, 6].map((movie) => (
-            <div className="col-md-4" key={movie}>
-              <div className="card bg-dark text-white shadow-lg">
-                <img
-                  src="https://images.pexels.com/photos/799132/pexels-photo-799132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
-                  className="card-img-top"
-                  alt={`Película ${movie}`}
-                />
-                <div className="card-body">
-                  <h5 className="card-title">Película {movie}</h5>
-                  <p className="card-text">
-                    Una breve descripción de la película {movie}.
-                  </p>
-                </div>
-              </div>
-            </div>
-          ))}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <img
+            src="https://images.pexels.com/photos/799132/pexels-photo-799132.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260"
+            alt="Películas"
+            className="rounded-lg shadow-lg"
+          />
         </div>
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+        <div className="bg-gray-700 p-6 rounded-lg shadow-lg">
+          <h2 className="text-2xl font-semibold text-white mb-4">
             Formulario de Alquiler
           </h2>
           <div className="mb-4">
-            <label htmlFor="inventoryId" className="block text-gray-600 mb-2">
+            <label htmlFor="inventoryId" className="block text-gray-300 mb-2">
               ID del Inventario
             </label>
             <input
               type="text"
               id="inventoryId"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2"
+              className="w-full border border-gray-500 rounded-lg px-4 py-2"
               value={inventoryId}
               onChange={(e) => setInventoryId(e.target.value)}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="customerId" className="block text-gray-600 mb-2">
+            <label htmlFor="customerId" className="block text-gray-300 mb-2">
               ID del Cliente
             </label>
             <input
               type="text"
               id="customerId"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2"
+              className="w-full border border-gray-500 rounded-lg px-4 py-2"
               value={customerId}
               onChange={(e) => setCustomerId(e.target.value)}
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="staffId" className="block text-gray-600 mb-2">
+            <label htmlFor="staffId" className="block text-gray-300 mb-2">
               ID del Empleado
             </label>
             <input
               type="text"
               id="staffId"
-              className="w-full border border-gray-300 rounded-lg px-4 py-2"
+              className="w-full border border-gray-500 rounded-lg px-4 py-2"
               value={staffId}
               onChange={(e) => setStaffId(e.target.value)}
             />
           </div>
           <button
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            className="w-full bg-teal-600 text-white py-2 rounded-lg hover:bg-teal-700 transition"
             onClick={handleRentMovie}
             disabled={loading}
           >
             {loading ? <Loader /> : "Alquilar"}
           </button>
           <button
-            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition mt-2"
+            className="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 transition mt-4"
             onClick={handleReturnMovie}
             disabled={loading}
           >
