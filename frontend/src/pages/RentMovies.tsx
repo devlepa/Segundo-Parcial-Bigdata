@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import Notification from "../components/Notification";
 import Loader from "../components/Loader";
+import MovieCard from "../components/MovieCard";
 
 const RentMovies: React.FC = () => {
   const [inventoryId, setInventoryId] = useState("");
@@ -95,84 +96,75 @@ const RentMovies: React.FC = () => {
   };
 
   return (
-    <div className="container my-5">
-      <h1 className="text-center text-warning mb-4">🎥 Alquilar Películas</h1>
-      <div className="row">
-        <div className="col-md-8">
-          <div className="row g-4">
-            {[1, 2, 3, 4, 5, 6].map((movie) => (
-              <div className="col-md-4" key={movie}>
-                <div className="card bg-dark text-white shadow-lg">
-                  <img
-                    src="https://via.placeholder.com/300x450?text=Película+Por+Defecto"
-                    className="card-img-top"
-                    alt={`Película ${movie}`}
-                  />
-                  <div className="card-body">
-                    <h5 className="card-title">Película {movie}</h5>
-                    <p className="card-text">
-                      Una breve descripción de la película {movie}.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+    <div className="container mx-auto my-10">
+      <h1 className="text-4xl font-bold text-center text-gray-800 mb-8">
+        🎥 Alquilar Películas
+      </h1>
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="md:col-span-2 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[1, 2, 3, 4, 5, 6].map((movie) => (
+            <MovieCard
+              key={movie}
+              title={`Película ${movie}`}
+              description={`Una breve descripción de la película ${movie}.`}
+              image="https://via.placeholder.com/300x450?text=Película+Por+Defecto"
+            />
+          ))}
         </div>
-        <div className="col-md-4">
-          <div className="card bg-dark text-white shadow-lg p-4">
-            <h4 className="text-center mb-4">Formulario de Alquiler</h4>
-            <div className="mb-3">
-              <label htmlFor="inventoryId" className="form-label">
-                ID del Inventario
-              </label>
-              <input
-                type="text"
-                id="inventoryId"
-                className="form-control"
-                value={inventoryId}
-                onChange={(e) => setInventoryId(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="customerId" className="form-label">
-                ID del Cliente
-              </label>
-              <input
-                type="text"
-                id="customerId"
-                className="form-control"
-                value={customerId}
-                onChange={(e) => setCustomerId(e.target.value)}
-              />
-            </div>
-            <div className="mb-3">
-              <label htmlFor="staffId" className="form-label">
-                ID del Empleado
-              </label>
-              <input
-                type="text"
-                id="staffId"
-                className="form-control"
-                value={staffId}
-                onChange={(e) => setStaffId(e.target.value)}
-              />
-            </div>
-            <button
-              className="btn btn-warning w-100"
-              onClick={handleRentMovie}
-              disabled={loading}
-            >
-              {loading ? <Loader /> : "Alquilar"}
-            </button>
-            <button
-              className="btn btn-warning w-100 mt-2"
-              onClick={handleReturnMovie}
-              disabled={loading}
-            >
-              {loading ? "Procesando..." : "Devolver"}
-            </button>
+        <div className="bg-white shadow-lg rounded-lg p-6">
+          <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+            Formulario de Alquiler
+          </h2>
+          <div className="mb-4">
+            <label htmlFor="inventoryId" className="block text-gray-600 mb-2">
+              ID del Inventario
+            </label>
+            <input
+              type="text"
+              id="inventoryId"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
+              value={inventoryId}
+              onChange={(e) => setInventoryId(e.target.value)}
+            />
           </div>
+          <div className="mb-4">
+            <label htmlFor="customerId" className="block text-gray-600 mb-2">
+              ID del Cliente
+            </label>
+            <input
+              type="text"
+              id="customerId"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
+              value={customerId}
+              onChange={(e) => setCustomerId(e.target.value)}
+            />
+          </div>
+          <div className="mb-4">
+            <label htmlFor="staffId" className="block text-gray-600 mb-2">
+              ID del Empleado
+            </label>
+            <input
+              type="text"
+              id="staffId"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2"
+              value={staffId}
+              onChange={(e) => setStaffId(e.target.value)}
+            />
+          </div>
+          <button
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition"
+            onClick={handleRentMovie}
+            disabled={loading}
+          >
+            {loading ? <Loader /> : "Alquilar"}
+          </button>
+          <button
+            className="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700 transition mt-2"
+            onClick={handleReturnMovie}
+            disabled={loading}
+          >
+            {loading ? "Procesando..." : "Devolver"}
+          </button>
         </div>
       </div>
       {notification && (
