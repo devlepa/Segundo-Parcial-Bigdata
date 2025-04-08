@@ -150,22 +150,19 @@ def rent_movie(
     Verifica si el inventario existe, si pertenece a la tienda y si no está alquilado.
     """
     logging.debug(
-        f"Solicitud recibida en /rent_movie/: inventory_id={rental.inventory_id}, customer_id={rental.customer_id}, staff_id={rental.staff_id}, store_id={rental.store_id}"
+        f"Solicitud recibida en /rent_movie/: inventory_id={rental.inventory_id}, customer_id={rental.customer_id}, staff_id={rental.staff_id}"
     )
 
-    # Verificar si el inventario existe y pertenece a la tienda especificada
+    # Verificar si el inventario existe
     inventory = (
         db.query(models.Inventory)
-        .filter(
-            models.Inventory.inventory_id == rental.inventory_id,
-            models.Inventory.store_id == rental.store_id,
-        )
+        .filter(models.Inventory.inventory_id == rental.inventory_id)
         .first()
     )
     if not inventory:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Inventory not found or not available in the specified store",
+            detail="Inventory not found",
         )
 
     # Verificar si la película ya está alquilada
@@ -173,7 +170,7 @@ def rent_movie(
         db.query(models.Rental)
         .filter(
             models.Rental.inventory_id == rental.inventory_id,
-            models.Rental.return_date == None,
+            models.Rental.return_date == None,  # No ha sido devuelta
         )
         .first()
     )
@@ -181,6 +178,28 @@ def rent_movie(
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Movie is already rented",
+        )
+
+    # Verificar si el cliente existe
+    customer = (
+        db.query(models.Customer)
+        .filter(models.Customer.customer_id == rental.customer_id)
+        .first()
+    )
+    if not customer:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Customer not found",
+        )
+
+    # Verificar si el empleado existe
+    staff = (
+        db.query(models.Staff).filter(models.Staff.staff_id == rental.staff_id).first()
+    )
+    if not staff:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Staff not found",
         )
 
     # Crear un nuevo registro de alquiler
@@ -195,6 +214,7 @@ def rent_movie(
         db.commit()
         db.refresh(new_rental)
 
+        logging.info(f"Rental created successfully: {new_rental}")
         return new_rental
     except Exception as e:
         db.rollback()
