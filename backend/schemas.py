@@ -1,12 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
-from fastapi import FastAPI, Depends, HTTPException, status
-from sqlalchemy.orm import Session
-import models, schemas
-from database import get_db
-
-app = FastAPI()
 
 
 class ActorBase(BaseModel):
@@ -77,5 +71,3 @@ class RentMovieResponse(BaseModel):
 class ReturnMovieRequest(BaseModel):
     inventory_id: int
     customer_id: int
-
-

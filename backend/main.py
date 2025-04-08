@@ -1,20 +1,11 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
+from datetime import datetime
 import models
 import schemas
 import crud
-import database
-from models import *
-from datetime import datetime
-from typing import List
-
-SessionLocal = database.SessionLocal
-engine = database.engine
-Base = database.Base
-
-
-Base.metadata.create_all(bind=engine)
+from database import get_db
 
 app = FastAPI()
 
@@ -28,14 +19,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 
 @app.get("/")
@@ -65,7 +48,7 @@ def check_film_exists(film_title: str, db: Session = Depends(get_db)):
 
 
 @app.get(
-    "/check_availability/{film_title}", response_model=List[schemas.FilmAvailability]
+    "/check_availability/{film_title}", response_model=list[schemas.FilmAvailability]
 )
 def check_availability(film_title: str, db: Session = Depends(get_db)):
     try:
@@ -200,7 +183,7 @@ def rent_movie(
 
 @app.post("/return_movie/")
 def return_movie(
-    request: schemas.ReturnMovieRequest,  # Cambiar a un esquema de entrada
+    request: schemas.ReturnMovieRequest,
     db: Session = Depends(get_db),
 ):
     """

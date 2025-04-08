@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_BASE_URL = "http://ec2-18-234-101-246.compute-1.amazonaws.com:8000"; // Updated Backend URL
+const API_BASE_URL = "http://ec2-18-234-101-246.compute-1.amazonaws.com:8000"; // Backend URL
 
 export interface Actor {
   actor_id: number;
