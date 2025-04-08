@@ -2,16 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
+
 body {
   margin: 0;
   padding: 0;
-  font-family: "Inter", sans-serif;
+  font-family: "Roboto", sans-serif;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #141414; /* Netflix dark background */
-  color: #ffffff; /* White text */
+  background-color: #e6ebe0; /* Alabaster */
+  color: #363636; /* Dark gray */
 }
 
 #root {
@@ -56,7 +58,7 @@ input[type="text"] {
 }
 
 button {
-  background-color: #e50914; /* Netflix red */
+  background-color: #36c9c6; /* Robin Egg Blue */
   color: #ffffff;
   border: none;
   padding: 10px 20px;
@@ -67,7 +69,7 @@ button {
 }
 
 button:hover {
-  background-color: #f40612; /* Slightly brighter red */
+  background-color: #2ba9a6; /* Slightly darker Robin Egg Blue */
 }
 
 table {
@@ -108,7 +110,7 @@ tr:hover {
   transition: background-color 0.3s;
 }
 
-.refresh-btn:hover {
+refresh-btn:hover {
   background-color: #007bb5;
 }
 
@@ -119,7 +121,7 @@ a {
 }
 
 a:hover {
-  color: #e50914; /* Netflix red */
+  color: #ed6a5a; /* Terra Cotta */
 }
 
 nav a {
