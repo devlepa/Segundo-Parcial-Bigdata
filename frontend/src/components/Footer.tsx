@@ -2,17 +2,17 @@ import React from "react";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-900 text-gray-400 py-6">
-      <div className="container mx-auto text-center">
-        <p className="text-sm">
+    <footer className="bg-dark text-light py-4">
+      <div className="container text-center">
+        <p className="mb-0">
           © {new Date().getFullYear()} Blockbuster. Todos los derechos
           reservados.
         </p>
-        <div className="flex justify-center space-x-4 mt-4">
-          <a href="#" className="hover:text-yellow-400 transition duration-300">
+        <div className="mt-2">
+          <a href="#" className="text-warning mx-2">
             Términos y Condiciones
           </a>
-          <a href="#" className="hover:text-yellow-400 transition duration-300">
+          <a href="#" className="text-warning mx-2">
             Política de Privacidad
           </a>
         </div>

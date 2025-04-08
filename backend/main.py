@@ -21,12 +21,12 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://ec2-204-236-193-94.compute-1.amazonaws.com:5173",  # Updated Frontend Domain
+        "http://ec2-54-197-103-116.compute-1.amazonaws.com:5173",  # Frontend Domain
         "http://localhost:5173",  # For local development
     ],
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
@@ -63,20 +63,6 @@ def check_film_exists(film_title: str, db: Session = Depends(get_db)):
     else:
         return {"error": "Film not found"}
 
-
-@app.get("/health")
-def health_check(db: Session = Depends(get_db)):
-    """
-    Endpoint para verificar la conexión con la base de datos.
-    """
-    try:
-        # Intentar realizar una consulta simple
-        db.execute("SELECT 1")
-        return {"status": "ok", "message": "Database connection successful"}
-    except Exception as e:
-        raise HTTPException(
-            status_code=500, detail=f"Database connection error: {str(e)}"
-        )
 
 
 @app.get(
@@ -148,44 +134,44 @@ def check_availability(film_title: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=500, detail=f"Unexpected error: {str(e)}")
 
 
-@app.post("/rent_movie/")
+@app.post("/rent_movie/", response_model=schemas.RentalOut)
 def rent_movie(
-    inventory_id: int,
-    customer_id: int,
-    staff_id: int,
+    rental: schemas.RentalCreate,
     db: Session = Depends(get_db),
 ):
     """
     Endpoint para alquilar una película.
+    Verifica si el inventario existe, si pertenece a la tienda y si no está alquilado.
     """
     print(
-        f"Solicitud recibida en /rent_movie/: inventory_id={inventory_id}, customer_id={customer_id}, staff_id={staff_id}"
+        f"Solicitud recibida en /rent_movie/: inventory_id={rental.inventory_id}, customer_id={rental.customer_id}, staff_id={rental.staff_id}, store_id={rental.store_id}"
     )
 
-    # Verificar si el inventario existe
+    # Verificar si el inventario existe y pertenece a la tienda especificada
     inventory = (
         db.query(models.Inventory)
-        .filter(models.Inventory.inventory_id == inventory_id)
+        .filter(
+            models.Inventory.inventory_id == rental.inventory_id,
+            models.Inventory.store_id == rental.store_id,
+        )
         .first()
     )
     if not inventory:
-        print(f"Inventario no encontrado: inventory_id={inventory_id}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="Inventory not found",
+            detail="Inventory not found or not available in the specified store",
         )
 
     # Verificar si la película ya está alquilada
-    rental = (
+    rental_exists = (
         db.query(models.Rental)
         .filter(
-            models.Rental.inventory_id == inventory_id,
+            models.Rental.inventory_id == rental.inventory_id,
             models.Rental.return_date == None,  # No ha sido devuelta
         )
         .first()
     )
-    if rental:
-        print(f"Película ya alquilada: inventory_id={inventory_id}")
+    if rental_exists:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Movie is already rented",
@@ -195,24 +181,65 @@ def rent_movie(
     try:
         new_rental = models.Rental(
             rental_date=datetime.utcnow(),
-            inventory_id=inventory_id,
-            customer_id=customer_id,
-            staff_id=staff_id,
+            inventory_id=rental.inventory_id,
+            customer_id=rental.customer_id,
+            staff_id=rental.staff_id,
         )
         db.add(new_rental)
         db.commit()
         db.refresh(new_rental)
 
-        print(f"Película alquilada exitosamente: rental_id={new_rental.rental_id}")
-        return {
-            "message": "Movie rented successfully",
-            "rental_id": new_rental.rental_id,
-            "rental_date": new_rental.rental_date,
-        }
+        return new_rental
     except Exception as e:
-        print(f"Error al alquilar la película: {str(e)}")
         db.rollback()
+        print(f"Error al alquilar la película: {str(e)}")  # Agregar un log detallado
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An error occurred while renting the movie.",
+            detail=f"An error occurred while renting the movie: {str(e)}",  # Incluir el error original
+        )
+
+
+@app.post("/return_movie/")
+def return_movie(
+    request: schemas.ReturnMovieRequest,  # Cambiar a un esquema de entrada
+    db: Session = Depends(get_db),
+):
+    """
+    Endpoint para devolver una película.
+    Actualiza el registro de alquiler correspondiente y establece la fecha de devolución.
+    """
+    print(
+        f"Solicitud recibida en /return_movie/: inventory_id={request.inventory_id}, customer_id={request.customer_id}"
+    )
+
+    # Verificar si existe un alquiler activo para el inventario y el cliente
+    rental = (
+        db.query(models.Rental)
+        .filter(
+            models.Rental.inventory_id == request.inventory_id,
+            models.Rental.customer_id == request.customer_id,
+            models.Rental.return_date == None,  # Alquiler activo (sin devolver)
+        )
+        .first()
+    )
+    if not rental:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="No active rental found for the specified inventory and customer",
+        )
+
+    # Actualizar la fecha de devolución
+    try:
+        rental.return_date = datetime.utcnow()
+        db.commit()
+        db.refresh(rental)
+
+        print(f"Película devuelta exitosamente: rental_id={rental.rental_id}")
+        return {"message": "Movie returned successfully", "rental_id": rental.rental_id}
+    except Exception as e:
+        db.rollback()
+        print(f"Error al devolver la película: {str(e)}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"An error occurred while returning the movie: {str(e)}",
         )

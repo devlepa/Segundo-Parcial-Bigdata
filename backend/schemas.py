@@ -1,6 +1,12 @@
 from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
+from fastapi import FastAPI, Depends, HTTPException, status
+from sqlalchemy.orm import Session
+import models, schemas
+from database import get_db
+
+app = FastAPI()
 
 
 class ActorBase(BaseModel):
@@ -20,16 +26,40 @@ class ActorOut(ActorBase):
         orm_mode = True
 
 
+class RentalBase(BaseModel):
+    inventory_id: int
+    customer_id: int
+    staff_id: int
+
+
+class RentalCreate(BaseModel):
+    inventory_id: int
+    customer_id: int
+    staff_id: int
+    store_id: int  # Agregado para verificar la tienda
+
+
+class RentalOut(BaseModel):
+    rental_id: int
+    rental_date: datetime
+    inventory_id: int
+    customer_id: int
+    staff_id: int
+
+    class Config:
+        orm_mode = True
+
+
 class FilmAvailability(BaseModel):
     film_id: int
     title: str
     inventory_id: int
     store_id: int
-    store_location: Optional[str] = None
+    store_location: str
     is_rented: bool
 
     class Config:
-        from_attributes = True  # Pydantic v2 - Reemplazo de 'orm_mode'
+        orm_mode = True
 
 
 class RentMovieRequest(BaseModel):
@@ -42,3 +72,10 @@ class RentMovieResponse(BaseModel):
     message: str
     rental_id: int
     rental_date: datetime
+
+
+class ReturnMovieRequest(BaseModel):
+    inventory_id: int
+    customer_id: int
+
+

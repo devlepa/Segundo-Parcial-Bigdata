@@ -4,7 +4,7 @@ import { FaFilm, FaSearch, FaUsers, FaShoppingCart } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light shadow-sm">
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg">
       <div className="container">
         <Link to="/" className="navbar-brand d-flex align-items-center">
           <img
@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
             className="me-2"
             style={{ borderRadius: "50%" }}
           />
-          <span className="fw-bold text-primary fs-4">Blockbuster</span>
+          <span className="fw-bold text-warning fs-4">Blockbuster</span>
         </Link>
         <button
           className="navbar-toggler"
@@ -29,22 +29,22 @@ const Navbar: React.FC = () => {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav ms-auto">
             <li className="nav-item">
-              <Link to="/actors" className="nav-link text-dark">
+              <Link to="/actors" className="nav-link text-light">
                 <FaUsers className="me-2" /> Actores
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/film-availability" className="nav-link text-dark">
+              <Link to="/film-availability" className="nav-link text-light">
                 <FaFilm className="me-2" /> Disponibilidad
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/search-movies" className="nav-link text-dark">
+              <Link to="/search-movies" className="nav-link text-light">
                 <FaSearch className="me-2" /> Buscar Películas
               </Link>
             </li>
             <li className="nav-item">
-              <Link to="/rent-movies" className="nav-link text-dark">
+              <Link to="/rent-movies" className="nav-link text-light">
                 <FaShoppingCart className="me-2" /> Alquilar
               </Link>
             </li>

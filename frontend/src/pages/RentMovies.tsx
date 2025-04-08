@@ -25,17 +25,20 @@ const RentMovies: React.FC = () => {
     }
 
     try {
-      const response = await fetch("/api/rent_movie/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          inventory_id: parseInt(inventoryId, 10),
-          customer_id: parseInt(customerId, 10),
-          staff_id: parseInt(staffId, 10),
-        }),
-      });
+      const response = await fetch(
+        "http://ec2-54-197-103-116.compute-1.amazonaws.com:8000/rent_movie/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            inventory_id: parseInt(inventoryId, 10),
+            customer_id: parseInt(customerId, 10),
+            staff_id: parseInt(staffId, 10),
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -51,8 +54,47 @@ const RentMovies: React.FC = () => {
     }
   };
 
-  const defaultMovieImage =
-    "https://via.placeholder.com/300x450?text=Película+Por+Defecto";
+  const handleReturnMovie = async () => {
+    setLoading(true);
+    setNotification(null);
+
+    if (!inventoryId || !customerId) {
+      setNotification({
+        message: "Todos los campos son obligatorios",
+        type: "error",
+      });
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        "http://ec2-54-197-103-116.compute-1.amazonaws.com:8000/return_movie/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            inventory_id: parseInt(inventoryId, 10),
+            customer_id: parseInt(customerId, 10),
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || `Error: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setNotification({ message: data.message, type: "success" });
+    } catch (error: any) {
+      setNotification({ message: error.message, type: "error" });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="my-5">
@@ -64,7 +106,7 @@ const RentMovies: React.FC = () => {
               <div className="col-md-4" key={movie}>
                 <div className="card bg-dark text-white shadow-lg">
                   <img
-                    src={defaultMovieImage}
+                    src="https://via.placeholder.com/300x450?text=Película+Por+Defecto"
                     className="card-img-top"
                     alt={`Película ${movie}`}
                   />
@@ -73,7 +115,6 @@ const RentMovies: React.FC = () => {
                     <p className="card-text">
                       Una breve descripción de la película {movie}.
                     </p>
-                    <button className="btn btn-warning w-100">Alquilar</button>
                   </div>
                 </div>
               </div>
@@ -126,6 +167,13 @@ const RentMovies: React.FC = () => {
             >
               {loading ? "Procesando..." : "Alquilar"}
             </button>
+            <button
+              className="btn btn-warning w-100 mt-2"
+              onClick={handleReturnMovie}
+              disabled={loading}
+            >
+              {loading ? "Procesando..." : "Devolver"}
+            </button>
           </div>
         </div>
       </div>
@@ -137,3 +185,5 @@ const RentMovies: React.FC = () => {
 };
 
 export default RentMovies;
+
+
