@@ -12,7 +12,7 @@ const FilmAvailability: React.FC = () => {
       setAvailability(data);
       setError("");
     } catch (error) {
-      setError("Film not found or error occurred");
+      setError("No se encontró la película o ocurrió un error.");
     }
   };
 

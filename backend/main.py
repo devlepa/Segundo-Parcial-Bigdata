@@ -21,7 +21,7 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://ec2-54-197-103-116.compute-1.amazonaws.com:5173",  # Frontend Domain
+        "http://ec2-18-234-101-246.compute-1.amazonaws.com:5173",  # Frontend Domain
         "http://localhost:5173",  # For local development
     ],
     allow_credentials=True,
@@ -62,7 +62,6 @@ def check_film_exists(film_title: str, db: Session = Depends(get_db)):
         return {"film_id": film.film_id, "title": film.title}
     else:
         return {"error": "Film not found"}
-
 
 
 @app.get(
