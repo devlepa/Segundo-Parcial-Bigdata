@@ -6,6 +6,10 @@ import models
 import schemas
 import crud
 from database import get_db
+import logging
+
+# Configurar logging
+logging.basicConfig(level=logging.DEBUG)
 
 app = FastAPI()
 
@@ -21,6 +25,16 @@ app.add_middleware(
 )
 
 
+# Middleware para capturar excepciones y registrar errores
+@app.middleware("http")
+async def log_exceptions(request, call_next):
+    try:
+        return await call_next(request)
+    except Exception as e:
+        logging.error(f"Unhandled exception: {e}")
+        raise e
+
+
 @app.get("/")
 def root():
     return {
@@ -30,7 +44,17 @@ def root():
 
 @app.get("/actors/", response_model=list[schemas.ActorOut])
 def read_actors(db: Session = Depends(get_db)):
-    return crud.get_actors(db)
+    try:
+        logging.debug("Fetching actors from the database.")
+        actors = crud.get_actors(db)
+        logging.debug(f"Actors fetched: {actors}")
+        return actors
+    except Exception as e:
+        logging.error(f"Error fetching actors: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="An error occurred while fetching actors.",
+        )
 
 
 @app.post("/actors/", response_model=schemas.ActorOut)
@@ -104,7 +128,7 @@ def check_availability(film_title: str, db: Session = Depends(get_db)):
                     "title": film.title,
                     "inventory_id": inventory.inventory_id,
                     "store_id": inventory.store_id,
-                    "store_location": f"Store {store.store_id}",  # Convertimos a string
+                    "store_location": f"Store {store.store_id}",
                     "is_rented": is_rented,
                 }
             )
@@ -125,7 +149,7 @@ def rent_movie(
     Endpoint para alquilar una película.
     Verifica si el inventario existe, si pertenece a la tienda y si no está alquilado.
     """
-    print(
+    logging.debug(
         f"Solicitud recibida en /rent_movie/: inventory_id={rental.inventory_id}, customer_id={rental.customer_id}, staff_id={rental.staff_id}, store_id={rental.store_id}"
     )
 
@@ -149,7 +173,7 @@ def rent_movie(
         db.query(models.Rental)
         .filter(
             models.Rental.inventory_id == rental.inventory_id,
-            models.Rental.return_date == None,  # No ha sido devuelta
+            models.Rental.return_date == None,
         )
         .first()
     )
@@ -174,10 +198,10 @@ def rent_movie(
         return new_rental
     except Exception as e:
         db.rollback()
-        print(f"Error al alquilar la película: {str(e)}")  # Agregar un log detallado
+        logging.error(f"Error al alquilar la película: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while renting the movie: {str(e)}",  # Incluir el error original
+            detail=f"An error occurred while renting the movie: {str(e)}",
         )
 
 
@@ -190,7 +214,7 @@ def return_movie(
     Endpoint para devolver una película.
     Actualiza el registro de alquiler correspondiente y establece la fecha de devolución.
     """
-    print(
+    logging.debug(
         f"Solicitud recibida en /return_movie/: inventory_id={request.inventory_id}, customer_id={request.customer_id}"
     )
 
@@ -200,7 +224,7 @@ def return_movie(
         .filter(
             models.Rental.inventory_id == request.inventory_id,
             models.Rental.customer_id == request.customer_id,
-            models.Rental.return_date == None,  # Alquiler activo (sin devolver)
+            models.Rental.return_date == None,
         )
         .first()
     )
@@ -216,11 +240,11 @@ def return_movie(
         db.commit()
         db.refresh(rental)
 
-        print(f"Película devuelta exitosamente: rental_id={rental.rental_id}")
+        logging.info(f"Película devuelta exitosamente: rental_id={rental.rental_id}")
         return {"message": "Movie returned successfully", "rental_id": rental.rental_id}
     except Exception as e:
         db.rollback()
-        print(f"Error al devolver la película: {str(e)}")
+        logging.error(f"Error al devolver la película: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail=f"An error occurred while returning the movie: {str(e)}",

@@ -12,9 +12,10 @@ class ActorCreate(ActorBase):
     pass
 
 
-class ActorOut(ActorBase):
+class ActorOut(BaseModel):
     actor_id: int
-    last_update: datetime
+    first_name: str
+    last_name: str
 
     class Config:
         orm_mode = True
@@ -30,7 +31,6 @@ class RentalCreate(BaseModel):
     inventory_id: int
     customer_id: int
     staff_id: int
-    store_id: int  # Agregado para verificar la tienda
 
 
 class RentalOut(BaseModel):
@@ -71,3 +71,25 @@ class RentMovieResponse(BaseModel):
 class ReturnMovieRequest(BaseModel):
     inventory_id: int
     customer_id: int
+
+
+class CustomerOut(BaseModel):
+    customer_id: int
+    first_name: str
+    last_name: str
+    email: Optional[str]
+    active: bool
+
+    class Config:
+        orm_mode = True
+
+
+class StaffOut(BaseModel):
+    staff_id: int
+    first_name: str
+    last_name: str
+    email: Optional[str]
+    username: str
+
+    class Config:
+        orm_mode = True

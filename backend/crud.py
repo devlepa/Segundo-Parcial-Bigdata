@@ -2,8 +2,10 @@ from sqlalchemy.orm import Session
 import models, schemas
 from datetime import datetime
 
+
 def get_actors(db: Session):
     return db.query(models.Actor).all()
+
 
 def create_actor(db: Session, actor: schemas.ActorCreate):
     db_actor = models.Actor(**actor.dict(), last_update=datetime.utcnow())
@@ -11,3 +13,11 @@ def create_actor(db: Session, actor: schemas.ActorCreate):
     db.commit()
     db.refresh(db_actor)
     return db_actor
+
+
+def get_customers(db: Session):
+    return db.query(models.Customer).all()
+
+
+def get_staff(db: Session):
+    return db.query(models.Staff).all()

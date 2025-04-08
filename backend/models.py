@@ -9,6 +9,9 @@ from sqlalchemy import (
     Text,
     DECIMAL,
     Enum,
+    Boolean,
+    BLOB,
+    UniqueConstraint,
 )
 from sqlalchemy.orm import relationship
 from datetime import datetime
@@ -42,12 +45,10 @@ class Film(Base):
     length = Column(SmallInteger)
     replacement_cost = Column(DECIMAL(5, 2), nullable=False, default=19.99)
     rating = Column(Enum("G", "PG", "PG-13", "R", "NC-17"))
-    special_features = Column(String(255))  # Reemplazo de SET por String
+    special_features = Column(String(255))  # Representamos el SET como String
     last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     inventories = relationship("Inventory", back_populates="film")
-    language = relationship("Language", foreign_keys=[language_id])
-    original_language = relationship("Language", foreign_keys=[original_language_id])
 
 
 class Inventory(Base):
@@ -69,10 +70,14 @@ class Rental(Base):
     rental_id = Column(Integer, primary_key=True, autoincrement=True)
     rental_date = Column(DateTime, nullable=False)
     inventory_id = Column(Integer, ForeignKey("inventory.inventory_id"), nullable=False)
-    customer_id = Column(Integer, ForeignKey("customer.customer_id"), nullable=False)
+    customer_id = Column(
+        SmallInteger, ForeignKey("customer.customer_id"), nullable=False
+    )
     return_date = Column(DateTime, nullable=True)
-    staff_id = Column(Integer, ForeignKey("staff.staff_id"), nullable=False)
+    staff_id = Column(SmallInteger, ForeignKey("staff.staff_id"), nullable=False)
     last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    inventory = relationship("Inventory", back_populates="rentals")
 
 
 class Store(Base):
@@ -84,6 +89,36 @@ class Store(Base):
     last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     inventories = relationship("Inventory", back_populates="store")
+
+
+class Customer(Base):
+    __tablename__ = "customer"
+
+    customer_id = Column(SmallInteger, primary_key=True, autoincrement=True)
+    store_id = Column(SmallInteger, ForeignKey("store.store_id"), nullable=False)
+    first_name = Column(String(45), nullable=False)
+    last_name = Column(String(45), nullable=False)
+    email = Column(String(50))
+    address_id = Column(SmallInteger, nullable=False)
+    active = Column(Boolean, nullable=False, default=True)
+    create_date = Column(DateTime, nullable=False)
+    last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+
+class Staff(Base):
+    __tablename__ = "staff"
+
+    staff_id = Column(SmallInteger, primary_key=True, autoincrement=True)
+    first_name = Column(String(45), nullable=False)
+    last_name = Column(String(45), nullable=False)
+    address_id = Column(SmallInteger, nullable=False)
+    picture = Column(BLOB, nullable=True)
+    email = Column(String(50))
+    store_id = Column(SmallInteger, ForeignKey("store.store_id"), nullable=False)
+    active = Column(Boolean, nullable=False, default=True)
+    username = Column(String(16), nullable=False)
+    password = Column(String(40))
+    last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class Language(Base):
