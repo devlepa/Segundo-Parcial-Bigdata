@@ -10,7 +10,8 @@ body {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background: linear-gradient(to right, #6a11cb, #2575fc);
+  background-color: #141414; /* Netflix dark background */
+  color: #ffffff; /* White text */
 }
 
 #root {
@@ -21,9 +22,9 @@ body {
 }
 
 .container {
-  max-width: 100%; /* Full width */
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 0 20px;
 }
 
 h1 {
@@ -55,19 +56,18 @@ input[type="text"] {
 }
 
 button {
-  padding: 10px;
-  background-color: #0d6efd; /* Bootstrap primary color */
-  color: white;
+  background-color: #e50914; /* Netflix red */
+  color: #ffffff;
   border: none;
+  padding: 10px 20px;
   border-radius: 4px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: background-color 0.3s ease;
   font-weight: bold;
 }
 
 button:hover {
-  transform: scale(1.05);
-  background-color: #0b5ed7; /* Darker primary color */
+  background-color: #f40612; /* Slightly brighter red */
 }
 
 table {
@@ -114,11 +114,12 @@ tr:hover {
 
 a {
   text-decoration: none;
+  color: inherit;
   transition: color 0.3s;
 }
 
 a:hover {
-  color: #ffd700; /* Gold color for hover */
+  color: #e50914; /* Netflix red */
 }
 
 nav a {
