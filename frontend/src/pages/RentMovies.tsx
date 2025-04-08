@@ -26,17 +26,20 @@ const RentMovies: React.FC = () => {
     }
 
     try {
-      const response = await fetch("/api/rent_movie/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          inventory_id: parseInt(inventoryId, 10),
-          customer_id: parseInt(customerId, 10),
-          staff_id: parseInt(staffId, 10),
-        }),
-      });
+      const response = await fetch(
+        "http://ec2-44-211-131-205.compute-1.amazonaws.com:8000/rent_movie/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            inventory_id: parseInt(inventoryId, 10),
+            customer_id: parseInt(customerId, 10),
+            staff_id: parseInt(staffId, 10),
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -44,7 +47,10 @@ const RentMovies: React.FC = () => {
       }
 
       const data = await response.json();
-      setNotification({ message: data.message, type: "success" });
+      setNotification({
+        message: "Película alquilada exitosamente",
+        type: "success",
+      });
     } catch (error: any) {
       setNotification({ message: error.message, type: "error" });
     } finally {
@@ -66,16 +72,19 @@ const RentMovies: React.FC = () => {
     }
 
     try {
-      const response = await fetch("/api/return_movie/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          inventory_id: parseInt(inventoryId, 10),
-          customer_id: parseInt(customerId, 10),
-        }),
-      });
+      const response = await fetch(
+        "http://ec2-44-211-131-205.compute-1.amazonaws.com:8000/return_movie/",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            inventory_id: parseInt(inventoryId, 10),
+            customer_id: parseInt(customerId, 10),
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -83,7 +92,10 @@ const RentMovies: React.FC = () => {
       }
 
       const data = await response.json();
-      setNotification({ message: data.message, type: "success" });
+      setNotification({
+        message: "Película devuelta exitosamente",
+        type: "success",
+      });
     } catch (error: any) {
       setNotification({ message: error.message, type: "error" });
     } finally {
