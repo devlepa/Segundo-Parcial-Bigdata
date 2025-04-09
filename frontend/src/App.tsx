@@ -11,6 +11,7 @@ import FilmAvailability from "./pages/FilmAvailability";
 import SearchMovies from "./pages/SearchMovies";
 import Actors from "./pages/Actors";
 import Home from "./pages/Home";
+import ReturnMovie from "./pages/ReturnMovie"; // Import the new page
 import "./styles.css";
 
 const App: React.FC = () => {
@@ -54,6 +55,14 @@ const App: React.FC = () => {
           element={
             <Layout>
               <Actors />
+            </Layout>
+          }
+        />
+        <Route
+          path="/return-movie"
+          element={
+            <Layout>
+              <ReturnMovie />
             </Layout>
           }
         />
