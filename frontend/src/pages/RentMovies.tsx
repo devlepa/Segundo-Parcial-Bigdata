@@ -26,15 +26,15 @@ const RentMovies: React.FC = () => {
 
     try {
       const response = await fetch(
-        "http://ec2-34-239-124-130.compute-1.amazonaws.com:8000/rent_movie/", // Updated to full backend URL
+        "http://ec2-34-239-124-130.compute-1.amazonaws.com:8000/rent_movie/",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            inventory_id: parseInt(inventoryId, 10),
-            customer_id: parseInt(customerId, 10),
+            inventory_id: Number(inventoryId), // Ensure it's sent as a number
+            customer_id: Number(customerId), // Ensure it's sent as a number
           }),
         }
       );
@@ -71,7 +71,7 @@ const RentMovies: React.FC = () => {
               ID del Inventario
             </label>
             <input
-              type="text"
+              type="number" // Ensure the input is numeric
               id="inventoryId"
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
               value={inventoryId}
@@ -83,7 +83,7 @@ const RentMovies: React.FC = () => {
               ID del Cliente
             </label>
             <input
-              type="text"
+              type="number" // Ensure the input is numeric
               id="customerId"
               className="w-full border border-gray-300 rounded-lg px-4 py-2"
               value={customerId}
