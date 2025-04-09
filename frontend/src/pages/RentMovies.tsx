@@ -25,16 +25,19 @@ const RentMovies: React.FC = () => {
     }
 
     try {
-      const response = await fetch("/api/rent_movie/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          inventory_id: parseInt(inventoryId, 10),
-          customer_id: parseInt(customerId, 10),
-        }),
-      });
+      const response = await fetch(
+        "http://ec2-34-239-124-130.compute-1.amazonaws.com:8000/rent_movie/", // Updated to full backend URL
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            inventory_id: parseInt(inventoryId, 10),
+            customer_id: parseInt(customerId, 10),
+          }),
+        }
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
