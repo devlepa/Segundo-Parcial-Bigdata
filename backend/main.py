@@ -184,13 +184,13 @@ def rent_movie(
             detail="Customer not found",
         )
 
-    # Crear un nuevo registro de alquiler
+    # Crear un nuevo registro de alquiler con staff_id por defecto 1
     try:
         new_rental = models.Rental(
             rental_date=datetime.utcnow(),
             inventory_id=rental.inventory_id,
             customer_id=rental.customer_id,
-            staff_id=rental.staff_id,  # Retain staff_id for now
+            staff_id=1,  # Default staff_id
         )
         db.add(new_rental)
 
