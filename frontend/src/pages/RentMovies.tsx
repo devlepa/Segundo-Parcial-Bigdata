@@ -24,6 +24,14 @@ const RentMovies: React.FC = () => {
       return;
     }
 
+    const payload = {
+      inventory_id: Number(inventoryId), // Ensure it's sent as a number
+      customer_id: Number(customerId), // Ensure it's sent as a number
+      staff_id: 1, // Default staff_id
+    };
+
+    console.log("Request Payload:", payload); // Log the payload for debugging
+
     try {
       const response = await fetch(
         "http://ec2-34-239-124-130.compute-1.amazonaws.com:8000/rent_movie/",
@@ -32,10 +40,7 @@ const RentMovies: React.FC = () => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({
-            inventory_id: Number(inventoryId), // Ensure it's sent as a number
-            customer_id: Number(customerId), // Ensure it's sent as a number
-          }),
+          body: JSON.stringify(payload),
         }
       );
 
