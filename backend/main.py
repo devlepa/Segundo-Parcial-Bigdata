@@ -165,23 +165,20 @@ def rent_movie(
             detail="Inventory not found",
         )
 
-    # Verificar si la película ya está alquilada usando el campo last_update
-    if inventory.last_update and inventory.last_update > datetime.utcnow():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Movie is already rented",
+    # Verificar si ya existe un alquiler activo para este inventario y cliente
+    existing_rental = (
+        db.query(models.Rental)
+        .filter(
+            models.Rental.inventory_id == rental.inventory_id,
+            models.Rental.customer_id == rental.customer_id,
+            models.Rental.return_date == None,
         )
-
-    # Verificar si el cliente existe
-    customer = (
-        db.query(models.Customer)
-        .filter(models.Customer.customer_id == rental.customer_id)
         .first()
     )
-    if not customer:
+    if existing_rental:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Customer not found",
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="This movie is already rented by the customer.",
         )
 
     # Crear un nuevo registro de alquiler con staff_id por defecto 1
@@ -199,19 +196,8 @@ def rent_movie(
         db.commit()
         db.refresh(new_rental)
 
-        # Insertar un registro en la tabla rental
-        rental_record = models.Rental(
-            rental_date=new_rental.rental_date,
-            inventory_id=new_rental.inventory_id,
-            customer_id=new_rental.customer_id,
-            staff_id=new_rental.staff_id,
-        )
-        db.add(rental_record)
-        db.commit()
-        db.refresh(rental_record)
-
-        logging.info(f"Rental created successfully: {rental_record}")
-        return rental_record
+        logging.info(f"Rental created successfully: {new_rental}")
+        return new_rental
     except Exception as e:
         db.rollback()
         logging.error(f"Error al alquilar la película: {str(e)}")
