@@ -214,7 +214,7 @@ def return_movie(
 ):
     """
     Endpoint para devolver una película.
-    Actualiza el registro de alquiler correspondiente y establece la fecha de devolución.
+    Elimina el registro de alquiler correspondiente para permitir un nuevo registro.
     """
     logging.debug(
         f"Solicitud recibida en /return_movie/: inventory_id={request.inventory_id}, customer_id={request.customer_id}"
@@ -236,18 +236,20 @@ def return_movie(
             detail="No active rental found for the specified inventory and customer",
         )
 
-    # Actualizar la fecha de devolución
+    # Eliminar el registro de alquiler
     try:
-        rental.return_date = datetime.utcnow()
+        db.delete(rental)
         db.commit()
-        db.refresh(rental)
 
-        logging.info(f"Película devuelta exitosamente: rental_id={rental.rental_id}")
-        return {"message": "Movie returned successfully", "rental_id": rental.rental_id}
+        logging.info(f"Registro de alquiler eliminado: rental_id={rental.rental_id}")
+        return {
+            "message": "Rental record deleted successfully",
+            "rental_id": rental.rental_id,
+        }
     except Exception as e:
         db.rollback()
-        logging.error(f"Error al devolver la película: {str(e)}")
+        logging.error(f"Error al eliminar el registro de alquiler: {str(e)}")
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred while returning the movie: {str(e)}",
+            detail=f"An error occurred while deleting the rental record: {str(e)}",
         )
