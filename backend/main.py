@@ -199,8 +199,19 @@ def rent_movie(
         db.commit()
         db.refresh(new_rental)
 
-        logging.info(f"Rental created successfully: {new_rental}")
-        return new_rental
+        # Insertar un registro en la tabla rental
+        rental_record = models.Rental(
+            rental_date=new_rental.rental_date,
+            inventory_id=new_rental.inventory_id,
+            customer_id=new_rental.customer_id,
+            staff_id=new_rental.staff_id,
+        )
+        db.add(rental_record)
+        db.commit()
+        db.refresh(rental_record)
+
+        logging.info(f"Rental created successfully: {rental_record}")
+        return rental_record
     except Exception as e:
         db.rollback()
         logging.error(f"Error al alquilar la película: {str(e)}")
