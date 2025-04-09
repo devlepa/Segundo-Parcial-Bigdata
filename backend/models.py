@@ -78,6 +78,7 @@ class Rental(Base):
     last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
 
     inventory = relationship("Inventory", back_populates="rentals")
+    customer = relationship("Customer", back_populates="rentals")
 
 
 class Store(Base):
@@ -103,6 +104,8 @@ class Customer(Base):
     active = Column(Boolean, nullable=False, default=True)
     create_date = Column(DateTime, nullable=False)
     last_update = Column(TIMESTAMP, default=datetime.utcnow, onupdate=datetime.utcnow)
+
+    rentals = relationship("Rental", back_populates="customer")
 
 
 class Staff(Base):

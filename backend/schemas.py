@@ -24,13 +24,10 @@ class ActorOut(BaseModel):
 class RentalBase(BaseModel):
     inventory_id: int
     customer_id: int
-    staff_id: int
 
 
-class RentalCreate(BaseModel):
-    inventory_id: int
-    customer_id: int
-    staff_id: int
+class RentalCreate(RentalBase):
+    staff_id: int  # Retain staff_id for now
 
 
 class RentalOut(BaseModel):

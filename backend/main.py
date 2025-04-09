@@ -147,10 +147,10 @@ def rent_movie(
 ):
     """
     Endpoint para alquilar una película.
-    Verifica si el inventario existe, si pertenece a la tienda y si no está alquilado.
+    Verifica si el inventario existe y si no está alquilado basado en el campo last_update.
     """
     logging.debug(
-        f"Solicitud recibida en /rent_movie/: inventory_id={rental.inventory_id}, customer_id={rental.customer_id}, staff_id={rental.staff_id}"
+        f"Solicitud recibida en /rent_movie/: inventory_id={rental.inventory_id}, customer_id={rental.customer_id}"
     )
 
     # Verificar si el inventario existe
@@ -165,16 +165,8 @@ def rent_movie(
             detail="Inventory not found",
         )
 
-    # Verificar si la película ya está alquilada
-    rental_exists = (
-        db.query(models.Rental)
-        .filter(
-            models.Rental.inventory_id == rental.inventory_id,
-            models.Rental.return_date == None,  # No ha sido devuelta
-        )
-        .first()
-    )
-    if rental_exists:
+    # Verificar si la película ya está alquilada usando el campo last_update
+    if inventory.last_update and inventory.last_update > datetime.utcnow():
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Movie is already rented",
@@ -192,25 +184,18 @@ def rent_movie(
             detail="Customer not found",
         )
 
-    # Verificar si el empleado existe
-    staff = (
-        db.query(models.Staff).filter(models.Staff.staff_id == rental.staff_id).first()
-    )
-    if not staff:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="Staff not found",
-        )
-
     # Crear un nuevo registro de alquiler
     try:
         new_rental = models.Rental(
             rental_date=datetime.utcnow(),
             inventory_id=rental.inventory_id,
             customer_id=rental.customer_id,
-            staff_id=rental.staff_id,
+            staff_id=rental.staff_id,  # Retain staff_id for now
         )
         db.add(new_rental)
+
+        # Actualizar el campo last_update del inventario
+        inventory.last_update = datetime.utcnow()
         db.commit()
         db.refresh(new_rental)
 
