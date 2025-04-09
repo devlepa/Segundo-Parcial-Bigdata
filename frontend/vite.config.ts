@@ -9,17 +9,17 @@ export default defineConfig({
     strictPort: true,
     cors: true,
     hmr: {
-      host: "ec2-44-211-131-205.compute-1.amazonaws.com",
+      host: "ec2-34-239-124-130.compute-1.amazonaws.com", // Updated IPv4 DNS
       port: 5173,
     },
     proxy: {
       "/api": {
-        target: "http://ec2-44-211-131-205.compute-1.amazonaws.com:8000", // Updated Backend URL
+        target: "http://ec2-34-239-124-130.compute-1.amazonaws.com:8000", // Updated Backend URL
         changeOrigin: true,
         secure: false,
       },
     },
-    allowedHosts: ["ec2-44-211-131-205.compute-1.amazonaws.com"], // Permitir el host
+    allowedHosts: ["ec2-34-239-124-130.compute-1.amazonaws.com"], // Updated host
   },
   preview: {
     host: "0.0.0.0",
